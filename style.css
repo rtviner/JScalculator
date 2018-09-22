@@ -47,7 +47,8 @@ section#numbers {
 	flex-flow: row-reverse wrap;
 	width: 60%;
 	align-content: center;
-	margin: 0 0 1.25em 1.75em;
+	margin: 0 0 1.25em 2em;
+
 }
 
 section#bottom-row {
@@ -63,7 +64,7 @@ section#operators {
 	flex-flow: column;
 	margin: 0;
 	margin-left: 0.65em;
- 	width: 25%;
+	margin-right: 2em;
  	align-content: flex-start;
 }
 
