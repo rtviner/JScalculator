@@ -1,0 +1,88 @@
+body {
+	font-size: 100%;
+	text-align: center;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+button {
+	font-size: 2em;
+	height: 2em;
+	border-radius: 10px;
+	border: .01em solid #000;
+	
+}
+
+section#calculator-body {
+	background-color: #536878;
+	max-width: 400px;
+	max-height: 600px;
+	min-height: 475px;
+	display: flex;
+	flex-flow: row wrap;
+	border-radius: 15px;
+	margin: 0 auto;
+}
+
+section#output {
+  font-size: 2em;
+  color:;
+  height: 2em;
+  width: 80%;
+  margin: .75em auto;
+  margin-bottom: .02em;
+  text-align: center;
+  background-color: #36454f;
+  border-radius: 2px;
+}
+
+section#top-buttons {
+  width: 82%;
+  margin: 0 auto;
+  margin-top: 0.5em;
+}
+
+section#numbers {
+	display: flex;
+	flex-flow: row-reverse wrap;
+	width: 60%;
+	align-content: center;
+	margin: 0 0 1.25em 1.75em;
+}
+
+section#bottom-row {
+  	width: 100%;
+  	margin: 0;
+  	display: flex;
+  	align-content: center;
+  	margin: 0 0 .25em 1.75em;
+}
+
+section#operators {
+	display: flex;
+	flex-flow: column;
+	margin: 0;
+	margin-left: 0.65em;
+ 	width: 25%;
+ 	align-content: flex-start;
+}
+
+button.num-btn,
+button.top-btn,
+button.op-btn {
+	padding: .25em;
+	margin: .1em;
+	width: 2.25em;
+}
+
+button.clear {
+	background-color: #965050;
+}
+
+button.op-btn {
+	background-color: #c7c4c4;
+}
+
+
+
+

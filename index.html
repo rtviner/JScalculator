@@ -7,32 +7,45 @@
 	</head>
 
 	<body>
-		<section id="output">
-			<div id="result-container"></div>
-		</section>
-		<section id="numbers">
-			<button>7</button>
-			<button>8</button>
-			<button>9</button>
-			<button>4</button>
-			<button>5</button>
-			<button>6</button>
-			<button>1</button>
-			<button>2</button>
-			<button>3</button>
-			<button>0</button>
-			<button>.</button>
-		</section>
-		<section id="operators">
-			<button>=</button>
-			<button>+</button>
-			<button>-</button>
-			<button>X</button>
-			<button>/</button>
-			<button>AC</button>
-			<button>C</button>
-		</section>
+		<section id="calculator-body">
 
+			<section id="output">0000000</section>	
+
+			<section  id="top-buttons">
+				<button class="top-btn clear">AC</button>
+				<button class="top-btn clear">Del</button>
+				<button class="top-btn">Ans</button>
+				<button class="top-btn sq-rt">sq rt</button>
+			</section>
+
+			<section id="numbers">
+				<button class="num-btn">9</button>
+				<button class="num-btn">8</button>
+				<button class="num-btn">7</button>
+				<button class="num-btn">6</button>
+				<button class="num-btn">5</button>
+				<button class="num-btn">4</button>
+				<button class="num-btn">3</button>
+				<button class="num-btn">2</button>
+				<button class="num-btn">1</button>
+				<section id="bottom-row">
+					<button class="num-btn">0</button>
+					<button class="num-btn">.</button>
+					<button class="num-btn">=</button>
+				</section>
+			</section>
+
+
+			<section id="operators">
+				<button class="op-btn">*</button>
+				<button class="op-btn">/</button>
+				<button class="op-btn">+</button>
+				<button class="op-btn">-</button>
+			</section>
+
+			
+
+		</section>
 
 		<script src="calculator.js"></script>
 	<body>
