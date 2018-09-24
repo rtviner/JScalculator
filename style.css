@@ -69,7 +69,6 @@ section#operators {
 }
 
 button.num-btn,
-button.equal-btn,
 button.top-btn,
 button.op-btn {
 	padding: .25em;
@@ -85,9 +84,6 @@ button.op-btn {
 	background-color: #c7c4c4;
 }
 
-button.sqrt {
-	background-color: #c7c4c4;	
-}
 
 
 

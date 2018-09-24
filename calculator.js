@@ -1,5 +1,7 @@
 let outputValue = document.getElementById('output');
 let numbers = document.querySelectorAll('.num-btn');
+let decimal = document.getElementById('dec-btn')
+let operators = document.querySelectorAll('op-btn');
 let inputValue = [];
 
 
@@ -47,11 +49,15 @@ numbers.forEach((number) => {
 	number.addEventListener('click', output);
 });
 
+decimal.addEventListener('click', output);
+
 function output(event) {
 	inputValue.push(event.target.innerHTML);
+
+	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
+	
 	outputValue.innerHTML = inputValue.join("");
-	console.log(inputValue);
-	return outputValue;
+	return inputValue;
 }
 
 
