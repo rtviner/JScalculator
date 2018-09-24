@@ -9,8 +9,7 @@ button {
 	font-size: 2em;
 	height: 2em;
 	border-radius: 10px;
-	border: .01em solid #000;
-	
+	border: .01em solid #000;	
 }
 
 section#calculator-body {
@@ -22,16 +21,17 @@ section#calculator-body {
 	flex-flow: row wrap;
 	border-radius: 15px;
 	margin: 0 auto;
+	margin-top: 4em;
 }
 
 section#output {
   font-size: 2em;
-  color:;
-  height: 2em;
+  color: white;
+  height: 1em;
   width: 80%;
   margin: .75em auto;
   margin-bottom: .02em;
-  text-align: center;
+  padding: .5em 0;
   background-color: #36454f;
   border-radius: 2px;
 }
