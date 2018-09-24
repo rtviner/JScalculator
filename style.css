@@ -27,11 +27,11 @@ section#calculator-body {
 section#output {
   font-size: 2em;
   color: white;
-  height: 1em;
+  height: 1.5em;
   width: 80%;
   margin: .75em auto;
   margin-bottom: .02em;
-  padding: .5em 0;
+  padding-top: 1em;
   background-color: #36454f;
   border-radius: 2px;
 }
@@ -69,6 +69,7 @@ section#operators {
 }
 
 button.num-btn,
+button.equal-btn,
 button.top-btn,
 button.op-btn {
 	padding: .25em;
