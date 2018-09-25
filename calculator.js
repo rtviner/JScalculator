@@ -1,9 +1,10 @@
 let outputValue = document.getElementById('output');
 let numbers = document.querySelectorAll('.num-btn');
 let decimal = document.getElementById('dec-btn')
-let operators = document.querySelectorAll('op-btn');
+let operators = document.querySelectorAll('.op-btn');
+let equals = document.getElementById('equal-btn');
+let clear = document.getElementById('clear');
 let inputValue = [];
-
 
 function add(num1, num2) {
 	return num1 + num2;
@@ -26,21 +27,22 @@ function sqrt(num1) {
 }
 
 function operate(operator, num1, num2) {
+
 	switch (operator) {
 		case "+":
-			return add(num1, num2);
+			outputValue.innerHTML = add(num1, num2);
 			break;
 		case "-":
-			return subtract(num1, num2);
+			outputValue.innerHTML = subtract(num1, num2);
 			break;
 		case "*":
-			return multiply(num1, num2);
+			outputValue.innerHTML = multiply(num1, num2);
 			break;
 		case "/":
-			return divide(num1, num2);
+			outputValue.innerHTML = divide(num1, num2);
 			break;
 		case "sqrt":
-			return sqrt(num1);
+			outputValue.innerHTML = sqrt(num1);
 			break;
 	}
 }
@@ -51,14 +53,64 @@ numbers.forEach((number) => {
 
 decimal.addEventListener('click', output);
 
+operators.forEach((operator) => {
+	operator.addEventListener('click', output);
+});
+
+
+
 function output(event) {
+	
 	inputValue.push(event.target.innerHTML);
 
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
+
+	let reg = /(\d+)([+/*-]?)(\d*)/;
+
+	let inputString = inputValue.join("");
+	console.log(inputString);
+	let match = reg.exec(inputString);
+
+	let num1 = match[1];
+	console.log("num1:", num1);
+	let operator = match[2];
+	console.log("operator:", operator);
+	let num2 = match[3];
+	console.log("num2:", num2);
+
+	outputValue.innerHTML = num1," ",operator," ",num2;
 	
-	outputValue.innerHTML = inputValue.join("");
-	return inputValue;
+	equals.addEventListener('click', operate(operator, num1, num2));
+ 
 }
+
+// function addOperator(event) {
+//     inputValue.push(" ",event.target.innerHTML," ");
+//     	console.log(inputValue);
+
+// 	numbers.forEach((number) => {
+// 		number.addEventListener('click', output);
+// 	});
+
+// 	decimal.addEventListener('click', output);
+// }
+    
+
+// function buildEquation(inputValue) {
+// 	    let inputValueStr = inputValue.join("");
+
+// 		let reg = /(\d+)([+/*-])(\d+)/;
+// 		let match = reg.exec(inputValueStr);
+
+// 		let num1 = match[1];
+// 		let operator = match[2];
+// 		let num2 = match[3];
+
+// 		outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+// }
+
+
+
 
 
 
