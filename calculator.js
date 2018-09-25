@@ -26,26 +26,29 @@ function sqrt(num1) {
 	Math.sqrt(num1);
 }
 
-function operate(operator, num1, num2) {
+// function operate(operator, num1, num2) {
 
-	switch (operator) {
-		case "+":
-			outputValue.innerHTML = add(num1, num2);
-			break;
-		case "-":
-			outputValue.innerHTML = subtract(num1, num2);
-			break;
-		case "*":
-			outputValue.innerHTML = multiply(num1, num2);
-			break;
-		case "/":
-			outputValue.innerHTML = divide(num1, num2);
-			break;
-		case "sqrt":
-			outputValue.innerHTML = sqrt(num1);
-			break;
-	}
-}
+// 	num1 = parseFloat(num1);
+// 	num2 = parseFloat(num2);
+
+// 	switch (operator) {
+// 		case "+":
+// 			outputValue.innerHTML = add(num1, num2);
+// 			break;
+// 		case "-":
+// 			outputValue.innerHTML = subtract(num1, num2);
+// 			break;
+// 		case "*":
+// 			outputValue.innerHTML = multiply(num1, num2);
+// 			break;
+// 		case "/":
+// 			outputValue.innerHTML = divide(num1, num2);
+// 			break;
+// 		case "sqrt":
+// 			outputValue.innerHTML = sqrt(num1);
+// 			break;
+// 	}
+// }
 
 numbers.forEach((number) => {
 	number.addEventListener('click', output);
@@ -65,22 +68,18 @@ function output(event) {
 
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
-	let reg = /(\d+)([+/*-]?)(\d*)/;
+	let reg = /(\d+\.*\d*)([+/*-]?)(\d*\.*\d*)/;
 
 	let inputString = inputValue.join("");
-	console.log(inputString);
 	let match = reg.exec(inputString);
 
 	let num1 = match[1];
-	console.log("num1:", num1);
 	let operator = match[2];
-	console.log("operator:", operator);
 	let num2 = match[3];
-	console.log("num2:", num2);
 
-	outputValue.innerHTML = num1," ",operator," ",num2;
+	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 	
-	equals.addEventListener('click', operate(operator, num1, num2));
+	// equals.addEventListener('click', operate(operator, num1, num2));
  
 }
 
