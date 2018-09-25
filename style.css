@@ -67,7 +67,8 @@ section#operators {
 	margin-right: 2em;
  	align-content: flex-start;
 }
-
+button#dec-btn,
+button#equal-btn,
 button.num-btn,
 button.top-btn,
 button.op-btn {
@@ -83,7 +84,6 @@ button.clear {
 button.op-btn {
 	background-color: #c7c4c4;
 }
-
 
 
 
