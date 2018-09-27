@@ -5,8 +5,8 @@ let operators = document.querySelectorAll('.op-btn');
 let equals = document.getElementById('equal-btn');
 let clear = document.getElementById('clear');
 let inputValue = [];
-let outputReg = /(\d+\.?\d*)([+/*-]?)(\d*\.?\d*)/;
-let equationReg = /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/;
+let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
+let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
 
 numbers.forEach((number) => {
 	number.addEventListener('click', output);
@@ -24,7 +24,9 @@ function output(event) {
 	inputValue.push(event.target.innerHTML);
 
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
-
+	
+	if (/[+/*-]/.test(inputValue) === true) decimal.addEventListener('click', output);
+	
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 
@@ -32,13 +34,12 @@ function output(event) {
 	let operator = match[2];
 	let num2 = match[3];
 
+
+	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
+
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
-	if (equationReg.test(inputString) === true) {
-
-		equals.addEventListener('click', buildEquation);
-	} 
-	
+	if (equationReg.test(inputString) === true) equals.addEventListener('click', buildEquation);	
 }
 
  function buildEquation() {
@@ -89,7 +90,7 @@ function divide(num1, num2) {
 }
 
 function sqrt(num1) {
-	Math.sqrt(num1);
+	return Math.sqrt(num1);
 }
 
 
