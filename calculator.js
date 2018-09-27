@@ -3,7 +3,8 @@ let numbers = document.querySelectorAll('.num-btn');
 let decimal = document.getElementById('dec-btn')
 let operators = document.querySelectorAll('.op-btn');
 let equals = document.getElementById('equal-btn');
-let clear = document.getElementById('clear');
+let allClearBtn = document.getElementById('allClear');
+let deleteBtn = document.getElementById('delete');
 let inputValue = [];
 let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
@@ -18,8 +19,25 @@ operators.forEach((operator) => {
 	operator.addEventListener('click', output);
 });
 
+allClearBtn.addEventListener('click', function() {
+	inputValue = [];
+	outputValue.innerHTML = "";
+})
 
-function output(event) {
+deleteBtn.addEventListener('click', function() {
+	inputValue.pop();
+	
+	let inputString = inputValue.join("");
+	let match = outputReg.exec(inputString);
+
+	let num1 = match[1];
+	let operator = match[2];
+	let num2 = match[3];
+
+	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+})
+
+function output() {
 
 	inputValue.push(event.target.innerHTML);
 
