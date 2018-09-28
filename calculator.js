@@ -26,7 +26,7 @@ allClearBtn.addEventListener('click', function() {
 
 deleteBtn.addEventListener('click', function() {
 	inputValue.pop();
-	
+
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 
@@ -71,24 +71,29 @@ function output() {
 }
 
 function operate(operator, num1, num2) {
-	
+	let answer;
+
 	switch (operator) {
 		case "+":
-			outputValue.innerHTML = add(num1, num2);
+			answer = add(num1, num2);
 			break;
 		case "-":
-			outputValue.innerHTML = subtract(num1, num2);
+			answer = subtract(num1, num2);
 			break;
 		case "*":
-			outputValue.innerHTML = multiply(num1, num2);
+			answer = multiply(num1, num2);
 			break;
 		case "/":
-			outputValue.innerHTML = divide(num1, num2);
+			answer = divide(num1, num2);
 			break;
 		case "sqrt":
-			outputValue.innerHTML = sqrt(num1);
+			answer = sqrt(num1);
 			break;
 	}
+	inputValue = [answer];
+
+	outputValue.innerHTML = inputValue;
+	
 }
 
 function add(num1, num2) {
