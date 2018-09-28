@@ -58,7 +58,7 @@ function output() {
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
-	if (equationReg.test(inputString) === true) equals.addEventListener('click', buildEquation);	
+	if (equationReg.test(inputString) === true) equals.addEventListener('click', buildEquation);
 }
 
  function buildEquation() {
@@ -69,6 +69,7 @@ function output() {
 			let num2 = parseFloat(match[3]);
 	
 			operate(operator, num1, num2);
+			equals.removeEventListener('click', buildEquation);
 }
 
 function operate(operator, num1, num2) {
@@ -92,9 +93,7 @@ function operate(operator, num1, num2) {
 			break;
 	}
 	inputValue = [answer];
-
-	outputValue.innerHTML = inputValue;
-	
+	outputValue.innerHTML = inputValue;	
 }
 
 function add(num1, num2) {
