@@ -14,7 +14,7 @@ numbers.forEach((number) => {
 });
 
 decimal.addEventListener('click', output);
-
+ 
 operators.forEach((operator) => {
 	operator.addEventListener('click', output);
 });
@@ -22,6 +22,7 @@ operators.forEach((operator) => {
 allClearBtn.addEventListener('click', function() {
 	inputValue = [];
 	outputValue.innerHTML = "";
+	decimal.addEventListener('click', output);
 })
 
 deleteBtn.addEventListener('click', function() {
@@ -35,6 +36,7 @@ deleteBtn.addEventListener('click', function() {
 	let num2 = match[3];
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+	decimal.addEventListener('click', output);
 })
 
 function output() {
@@ -43,8 +45,6 @@ function output() {
 
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
 	
-	if (/[+/*-]/.test(inputValue) === true) decimal.addEventListener('click', output);
-	
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 
@@ -52,6 +52,7 @@ function output() {
 	let operator = match[2];
 	let num2 = match[3];
 
+	if (/[+/*-]/.test(inputValue) === true) decimal.addEventListener('click', output);
 
 	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
