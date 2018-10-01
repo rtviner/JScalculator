@@ -41,8 +41,17 @@ deleteBtn.addEventListener('click', function() {
 
 function output() {
 
-	inputValue.push(event.target.innerHTML);
-
+	if (inputValue.length === 1 && typeof inputValue[0] == "number" && /[+/*-]/.test(event.target.innerHTML) === true) {
+		inputValue.push(event.target.innerHTML);
+	}
+	else if (inputValue.length === 1 && typeof inputValue[0] == "number" && /[+/*-]/.test(event.target.innerHTML) === false) {
+		inputValue.pop();
+		inputValue.push(event.target.innerHTML);
+	}
+	else {
+		inputValue.push(event.target.innerHTML);
+	}
+	
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
 	
 	let inputString = inputValue.join("");
@@ -62,14 +71,14 @@ function output() {
 }
 
  function buildEquation() {
-			let inputString = inputValue.join("");
-			let match = equationReg.exec(inputString);
-			let num1 = parseFloat(match[1]);
-			let operator = match[2];
-			let num2 = parseFloat(match[3]);
+	let inputString = inputValue.join("");
+	let match = equationReg.exec(inputString);
+	let num1 = parseFloat(match[1]);
+	let operator = match[2];
+	let num2 = parseFloat(match[3]);
 	
-			operate(operator, num1, num2);
-			equals.removeEventListener('click', buildEquation);
+	operate(operator, num1, num2);
+	equals.removeEventListener('click', buildEquation);
 }
 
 function operate(operator, num1, num2) {
@@ -92,8 +101,14 @@ function operate(operator, num1, num2) {
 			answer = sqrt(num1);
 			break;
 	}
-	inputValue = [answer];
-	outputValue.innerHTML = inputValue;	
+	if (answer.toString().length > 20) {
+		inputValue = [answer.toExponential()];
+	} 
+	else {
+		inputValue = [answer];
+	}
+
+	outputValue.innerHTML = inputValue.toString();	
 }
 
 function add(num1, num2) {
