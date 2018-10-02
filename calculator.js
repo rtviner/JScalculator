@@ -9,6 +9,18 @@ let inputValue = [];
 let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
 
+//add keyboard event listener 
+window.addEventListener('keydown', event => {
+	console.log(event.key);
+
+	if  (/\d|\./.test(event.key) === true) {
+		output();
+	}
+	else if (event.key == "Backspace") {
+		backspace();
+	}
+});
+
 numbers.forEach((number) => {
 	number.addEventListener('click', output);
 });
@@ -25,7 +37,9 @@ allClearBtn.addEventListener('click', function() {
 	decimal.addEventListener('click', output);
 })
 
-deleteBtn.addEventListener('click', function() {
+deleteBtn.addEventListener('click', backspace); 
+
+function backspace() {
 	inputValue.pop();
 
 	let inputString = inputValue.join("");
@@ -37,16 +51,29 @@ deleteBtn.addEventListener('click', function() {
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 	decimal.addEventListener('click', output);
-})
+}
 
 function output() {
 
-	if (inputValue.length === 1 && typeof inputValue[0] == "number" && /[+/*-]/.test(event.target.innerHTML) === true) {
-		inputValue.push(event.target.innerHTML);
-	}
-	else if (inputValue.length === 1 && typeof inputValue[0] == "number" && /[+/*-]/.test(event.target.innerHTML) === false) {
-		inputValue.pop();
-		inputValue.push(event.target.innerHTML);
+	if (inputValue.length === 1 && typeof inputValue[0] == "number") {
+		if (/[+/*-]/.test(event.target.innerHTML) === true) {
+			inputValue.push(event.target.innerHTML);
+		}
+		else if (/[+/*-]/.test(event.key) === true) {
+			inputValue.push(event.key);
+		}
+	} 
+	else if (inputValue.length === 1 && typeof inputValue[0] == "number") {
+		if (/[+/*-]/.test(event.target.innerHTML) === false) {
+			inputValue.pop();
+			inputValue.push(event.target.innerHTML);
+		}
+		else if (/[+/*-]/.test(event.key) === false) {
+			inputValue.push(event.key);
+		}
+	} 
+	else if (event.key !== null) {
+		inputValue.push(event.key);
 	}
 	else {
 		inputValue.push(event.target.innerHTML);
@@ -101,6 +128,7 @@ function operate(operator, num1, num2) {
 			answer = sqrt(num1);
 			break;
 	}
+
 	if (answer.toString().length > 20) {
 		inputValue = [answer.toExponential()];
 	} 
