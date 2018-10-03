@@ -5,9 +5,12 @@ let operators = document.querySelectorAll('.op-btn');
 let equals = document.getElementById('equal-btn');
 let allClearBtn = document.getElementById('allClear');
 let deleteBtn = document.getElementById('delete');
+let answerBtn = document.getElementById('ans');
+let sqrtBtn = document.getElementById('sqrt');
 let inputValue = [];
 let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
+let sqrtEquationReg = /(\d*\.?\d*)(\√)/;
 let operatorReg = /[+/*-]/;
 
 window.addEventListener('keydown', event => {
@@ -99,6 +102,8 @@ function output() {
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
+	if (sqrtEquationReg.test(inputString) === true) build1NumEquation();
+
 	if (equationReg.test(inputString) === true) {
 		if (eventInput === "=" || event.key === "Enter") {
 			buildEquation();
@@ -120,6 +125,15 @@ function output() {
 	equals.removeEventListener('click', buildEquation);
 }
 
+function build1NumEquation() {
+		let inputString = inputValue.join("");
+		let match = sqrtEquationReg.exec(inputString);
+		let num1 = parseFloat(match[1]);
+		let operator = match[2];
+
+		operate(operator, num1);
+}
+
 function operate(operator, num1, num2) {
 	let answer;
 
@@ -136,7 +150,7 @@ function operate(operator, num1, num2) {
 		case "/":
 			answer = divide(num1, num2);
 			break;
-		case "sqrt":
+		case "√":
 			answer = sqrt(num1);
 			break;
 	}
