@@ -1,5 +1,5 @@
 body {
-	font-size: 100%;
+	font: 100% arial, sans-serif;
 	text-align: center;
 	margin: 0;
 	box-sizing: border-box;
@@ -15,8 +15,7 @@ button {
 section#calculator-body {
 	background-color: #536878;
 	width: 400px;
-	max-height: 650px;
-	min-height: 550px;
+	height: 525px;
 	display: flex;
 	flex-flow: row wrap;
 	border-radius: 15px;
@@ -26,7 +25,7 @@ section#calculator-body {
 
 section#logo h2 {
 	color: #FFF;
-	font: 1.2em arial;
+	font-size: 1.2em;
 	margin: 1em auto 0 1em;
 }
 
