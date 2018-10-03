@@ -8,12 +8,14 @@ let deleteBtn = document.getElementById('delete');
 let inputValue = [];
 let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
+let operatorReg = /[+/*-]/;
 
 //add keyboard event listener 
 window.addEventListener('keydown', event => {
-	console.log(event.key);
-
 	if  (/\d|\./.test(event.key) === true) {
+		output();
+	}
+	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
 		output();
 	}
 	else if (event.key == "Backspace") {
@@ -27,15 +29,11 @@ numbers.forEach((number) => {
 
 decimal.addEventListener('click', output);
  
-operators.forEach((operator) => {
-	operator.addEventListener('click', output);
-});
-
 allClearBtn.addEventListener('click', function() {
 	inputValue = [];
 	outputValue.innerHTML = "";
 	decimal.addEventListener('click', output);
-})
+});
 
 deleteBtn.addEventListener('click', backspace); 
 
@@ -54,32 +52,32 @@ function backspace() {
 }
 
 function output() {
+	let eventInput;
 
-	if (inputValue.length === 1 && typeof inputValue[0] == "number") {
-		if (/[+/*-]/.test(event.target.innerHTML) === true) {
-			inputValue.push(event.target.innerHTML);
-		}
-		else if (/[+/*-]/.test(event.key) === true) {
-			inputValue.push(event.key);
-		}
-	} 
-	else if (inputValue.length === 1 && typeof inputValue[0] == "number") {
-		if (/[+/*-]/.test(event.target.innerHTML) === false) {
-			inputValue.pop();
-			inputValue.push(event.target.innerHTML);
-		}
-		else if (/[+/*-]/.test(event.key) === false) {
-			inputValue.push(event.key);
-		}
-	} 
-	else if (event.key !== null) {
-		inputValue.push(event.key);
-	}
-	else {
-		inputValue.push(event.target.innerHTML);
+	if (event.type === "keydown") {
+		eventInput = event.key;
+	} else if (event.type === "click") {
+		eventInput = event.target.innerHTML;
 	}
 	
+	if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === true) {
+		inputValue.push(eventInput);
+	}
+	else if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === false) {
+		inputValue.pop();
+		inputValue.push(eventInput);
+	}
+	else {
+		inputValue.push(eventInput);
+	}
+	// also need to remove decimal keybpard click capabilities here
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
+	
+	if (inputValue.length > 0) {
+		operators.forEach((operator) => {
+			operator.addEventListener('click', output);
+		});
+	}
 	
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
@@ -88,7 +86,7 @@ function output() {
 	let operator = match[2];
 	let num2 = match[3];
 
-	if (/[+/*-]/.test(inputValue) === true) decimal.addEventListener('click', output);
+	if (operatorReg.test(inputValue) === true) decimal.addEventListener('click', output);
 
 	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
