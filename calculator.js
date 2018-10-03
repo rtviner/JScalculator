@@ -12,15 +12,20 @@ let operatorReg = /[+/*-]/;
 
 //add keyboard event listener 
 window.addEventListener('keydown', event => {
-	if  (/\d|\./.test(event.key) === true) {
+	if  (/\d|\.|\=/.test(event.key) === true) {
 		output();
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
 		output();
 	}
-	else if (event.key == "Backspace") {
+	else if (event.key === "Backspace") {
 		backspace();
 	}
+	// else if (event.key === ".") {
+	// 	if (inputValue.indexOf('.') > -1) {
+
+	// 	}
+	// }
 });
 
 numbers.forEach((number) => {
@@ -52,6 +57,7 @@ function backspace() {
 }
 
 function output() {
+
 	let eventInput;
 
 	if (event.type === "keydown") {
@@ -60,6 +66,8 @@ function output() {
 		eventInput = event.target.innerHTML;
 	}
 	
+	console.log("event input:", eventInput);
+
 	if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === true) {
 		inputValue.push(eventInput);
 	}
@@ -72,7 +80,7 @@ function output() {
 	}
 	// also need to remove decimal keybpard click capabilities here
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
-	
+
 	if (inputValue.length > 0) {
 		operators.forEach((operator) => {
 			operator.addEventListener('click', output);
@@ -91,6 +99,10 @@ function output() {
 	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+
+	if (eventInput === "=" && equationReg.test(inputString) === true) {
+		buildEquation();
+	};
 
 	if (equationReg.test(inputString) === true) equals.addEventListener('click', buildEquation);
 }
