@@ -10,6 +10,7 @@ button {
 	height: 2em;
 	border-radius: 10px;
 	border: .01em solid #000;	
+	background-color: #FFF;
 }
 
 section#calculator-body {
@@ -55,7 +56,6 @@ section#numbers {
 	width: 60%;
 	align-content: center;
 	margin: 0 0 1.25em 2em;
-
 }
 
 section#bottom-row {
