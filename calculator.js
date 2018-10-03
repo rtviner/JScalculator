@@ -12,6 +12,7 @@ let operatorReg = /[+/*-]/;
 
 //add keyboard event listener 
 window.addEventListener('keydown', event => {
+	console.log(event.key);
 	if  (/\d/.test(event.key) === true) {
 		output();
 	}
@@ -21,7 +22,7 @@ window.addEventListener('keydown', event => {
 	else if (event.key === "Backspace") {
 		backspace();
 	}
-	else if (event.key === "=" && inputValue.length >= 3) {
+	else if ((event.key === "=" || event.key === "Enter") && inputValue.length >= 3) {
 		output();
 	}
 	else if (event.key === ".") {
@@ -104,7 +105,7 @@ function output() {
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
 	if (equationReg.test(inputString) === true) {
-		if (eventInput === "=") {
+		if (eventInput === "=" || event.key === "Enter") {
 			buildEquation();
 		}
 		else {
@@ -147,7 +148,7 @@ function operate(operator, num1, num2) {
 
 	if (answer.toString().length > 20) {
 		inputValue = [answer.toExponential()];
-	} 
+	}
 	else {
 		inputValue = [answer];
 	}
