@@ -12,7 +12,7 @@ let operatorReg = /[+/*-]/;
 
 //add keyboard event listener 
 window.addEventListener('keydown', event => {
-	if  (/\d|\.|\=/.test(event.key) === true) {
+	if  (/\d|\./.test(event.key) === true) {
 		output();
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
@@ -20,6 +20,9 @@ window.addEventListener('keydown', event => {
 	}
 	else if (event.key === "Backspace") {
 		backspace();
+	}
+	else if (event.key === "=" && inputValue.length >= 3) {
+		output();
 	}
 	// else if (event.key === ".") {
 	// 	if (inputValue.indexOf('.') > -1) {
