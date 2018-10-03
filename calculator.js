@@ -12,7 +12,7 @@ let operatorReg = /[+/*-]/;
 
 //add keyboard event listener 
 window.addEventListener('keydown', event => {
-	if  (/\d|\./.test(event.key) === true) {
+	if  (/\d/.test(event.key) === true) {
 		output();
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
@@ -24,11 +24,13 @@ window.addEventListener('keydown', event => {
 	else if (event.key === "=" && inputValue.length >= 3) {
 		output();
 	}
-	// else if (event.key === ".") {
-	// 	if (inputValue.indexOf('.') > -1) {
-
-	// 	}
-	// }
+	else if (event.key === ".") {
+		if (inputValue.indexOf('.') === -1) {
+			output();
+		} else if (operatorReg.test(inputValue) === true && inputValue.join("").match(/\./g).length < 2) {
+			output();
+		}
+	}
 });
 
 numbers.forEach((number) => {
@@ -68,8 +70,6 @@ function output() {
 	} else if (event.type === "click") {
 		eventInput = event.target.innerHTML;
 	}
-	
-	console.log("event input:", eventInput);
 
 	if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === true) {
 		inputValue.push(eventInput);
@@ -103,11 +103,14 @@ function output() {
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
-	if (eventInput === "=" && equationReg.test(inputString) === true) {
-		buildEquation();
-	};
-
-	if (equationReg.test(inputString) === true) equals.addEventListener('click', buildEquation);
+	if (equationReg.test(inputString) === true) {
+		if (eventInput === "=") {
+			buildEquation();
+		}
+		else {
+			equals.addEventListener('click', buildEquation);
+		}
+	}
 }
 
  function buildEquation() {
