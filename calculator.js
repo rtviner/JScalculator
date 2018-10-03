@@ -10,9 +10,7 @@ let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
 let operatorReg = /[+/*-]/;
 
-//add keyboard event listener 
 window.addEventListener('keydown', event => {
-	console.log(event.key);
 	if  (/\d/.test(event.key) === true) {
 		output();
 	}
@@ -82,8 +80,6 @@ function output() {
 	else {
 		inputValue.push(eventInput);
 	}
-	// also need to remove decimal keybpard click capabilities here
-	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
 	if (inputValue.length > 0) {
 		operators.forEach((operator) => {
@@ -93,13 +89,12 @@ function output() {
 	
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
-
 	let num1 = match[1];
 	let operator = match[2];
 	let num2 = match[3];
 
+	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
 	if (operatorReg.test(inputValue) === true) decimal.addEventListener('click', output);
-
 	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
@@ -152,7 +147,7 @@ function operate(operator, num1, num2) {
 	else {
 		inputValue = [answer];
 	}
-
+   
 	outputValue.innerHTML = inputValue.toString();	
 }
 
@@ -165,7 +160,17 @@ function subtract(num1, num2) {
 }
 
 function multiply(num1, num2) {
-	return num1 * num2;
+	product = num1 * num2;
+	return parseFloat(product.toFixed(decimalPlaces(num1)+decimalPlaces(num2)));
+}
+
+function decimalPlaces(num) {
+    var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+    if (!match) { return 0; }
+    return Math.max(
+        0,
+        (match[1] ? match[1].length : 0)
+        - (match[2] ? +match[2] : 0));
 }
 
 function divide(num1, num2) {
