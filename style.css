@@ -14,9 +14,9 @@ button {
 
 section#calculator-body {
 	background-color: #536878;
-	max-width: 400px;
-	max-height: 600px;
-	min-height: 475px;
+	width: 400px;
+	max-height: 650px;
+	min-height: 550px;
 	display: flex;
 	flex-flow: row wrap;
 	border-radius: 15px;
@@ -24,16 +24,24 @@ section#calculator-body {
 	margin-top: 4em;
 }
 
+section#logo h2 {
+	color: #FFF;
+	font: 1.2em arial;
+	margin: 1em auto 0 1em;
+}
+
 section#output {
   font-size: 2em;
   color: white;
   height: 1.5em;
   width: 80%;
-  margin: .75em auto;
+  margin: 0 auto;
   margin-bottom: .02em;
   padding-top: 1em;
   background-color: #36454f;
   border-radius: 2px;
+  overflow-y: scroll;
+  white-space: nowrap;
 }
 
 section#top-buttons {
