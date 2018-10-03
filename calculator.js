@@ -49,6 +49,8 @@ allClearBtn.addEventListener('click', function() {
 
 deleteBtn.addEventListener('click', backspace); 
 
+answerBtn.addEventListener('click', output);
+
 function backspace() {
 	inputValue.pop();
 
@@ -70,7 +72,11 @@ function output() {
 	if (event.type === "keydown") {
 		eventInput = event.key;
 	} else if (event.type === "click") {
-		eventInput = event.target.innerHTML;
+		if (event.target.innerHTML === "Ans") {
+			eventInput = answerBtn.value;
+		} else {
+			eventInput = event.target.innerHTML;
+		}
 	}
 
 	if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === true) {
@@ -157,9 +163,11 @@ function operate(operator, num1, num2) {
 
 	if (answer.toString().length > 20) {
 		inputValue = [answer.toExponential()];
+		answerBtn.value = answer.toExponential();
 	}
 	else {
 		inputValue = [answer];
+		answerBtn.value = answer;
 	}
    
 	outputValue.innerHTML = inputValue.toString();	
