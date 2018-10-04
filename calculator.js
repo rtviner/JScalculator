@@ -15,22 +15,22 @@ let operatorReg = /[+/*-]/;
 
 window.addEventListener('keydown', event => {
 	if  (/\d/.test(event.key) === true) {
-		output();
+		output(event);
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
-		output();
+		output(event);
 	}
 	else if (event.key === "Backspace") {
-		backspace();
+		backspace(event);
 	}
 	else if ((event.key === "=" || event.key === "Enter") && inputValue.length >= 3) {
-		output();
+		output(event);
 	}
 	else if (event.key === ".") {
 		if (inputValue.indexOf('.') === -1) {
-			output();
+			output(event);
 		} else if (operatorReg.test(inputValue) === true && inputValue.join("").match(/\./g).length < 2) {
-			output();
+			output(event);
 		}
 	}
 });
@@ -112,7 +112,7 @@ function output() {
 
 	if (equationReg.test(inputString) === true) {
 		if (eventInput === "=" || event.key === "Enter") {
-			buildEquation();
+			buildEquation(event);
 		}
 		else {
 			equals.addEventListener('click', buildEquation);
