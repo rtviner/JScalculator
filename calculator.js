@@ -65,7 +65,7 @@ function backspace() {
 	decimal.addEventListener('click', output);
 }
 
-function output() {
+function output(event) {
 
 	let eventInput;
 
