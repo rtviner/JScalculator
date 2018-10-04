@@ -15,22 +15,22 @@ let operatorReg = /[+/*-]/;
 
 window.addEventListener('keydown', event => {
 	if  (/\d/.test(event.key) === true) {
-		output(event);
+		output();
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
-		output(event);
+		output();
 	}
 	else if (event.key === "Backspace") {
-		backspace(event);
+		backspace();
 	}
 	else if ((event.key === "=" || event.key === "Enter") && inputValue.length >= 3) {
-		output(event);
+		output();
 	}
 	else if (event.key === ".") {
 		if (inputValue.indexOf('.') === -1) {
-			output(event);
+			output();
 		} else if (operatorReg.test(inputValue) === true && inputValue.join("").match(/\./g).length < 2) {
-			output(event);
+			output();
 		}
 	}
 });
@@ -41,7 +41,7 @@ numbers.forEach((number) => {
 
 decimal.addEventListener('click', output);
  
-allClearBtn.addEventListener('click', function() {
+allClearBtn.addEventListener('click', function(event) {
 	inputValue = [];
 	outputValue.innerHTML = "";
 	decimal.addEventListener('click', output);
@@ -51,7 +51,7 @@ deleteBtn.addEventListener('click', backspace);
 
 answerBtn.addEventListener('click', output);
 
-function backspace() {
+function backspace(event) {
 	inputValue.pop();
 
 	let inputString = inputValue.join("");
