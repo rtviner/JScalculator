@@ -14,23 +14,23 @@ let sqrtEquationReg = /(\d*\.?\d*)(\√)/;
 let operatorReg = /[+/*-]/;
 
 window.addEventListener('keydown', event => {
-	if  (/\d/.test(event.key) === true) {
-		output();
+	if (/\d/.test(event.key) === true) {
+		output(event);
 	}
 	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
-		output();
+		output(event);
 	}
 	else if (event.key === "Backspace") {
 		backspace();
 	}
 	else if ((event.key === "=" || event.key === "Enter") && inputValue.length >= 3) {
-		output();
+		output(event);
 	}
 	else if (event.key === ".") {
 		if (inputValue.indexOf('.') === -1) {
-			output();
+			output(event);
 		} else if (operatorReg.test(inputValue) === true && inputValue.join("").match(/\./g).length < 2) {
-			output();
+			output(event);
 		}
 	}
 });
@@ -66,12 +66,13 @@ function backspace(event) {
 }
 
 function output(event) {
-
+	console.log(event);
 	let eventInput;
 
 	if (event.type === "keydown") {
 		eventInput = event.key;
-	} else if (event.type === "click") {
+	} 
+	else if (event.type === "click") {
 		if (event.target.innerHTML === "Ans") {
 			eventInput = answerBtn.value;
 		} else {
@@ -79,7 +80,7 @@ function output(event) {
 		}
 	}
 
-	if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === true) {
+	if (inputValue.length === 1 && typeof inputValue[0] == "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
 		inputValue.push(eventInput);
 	}
 	else if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === false) {
@@ -108,7 +109,7 @@ function output(event) {
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
-	if (sqrtEquationReg.test(inputString) === true) build1NumEquation();
+	if (sqrtEquationReg.test(inputString) === true) build1NumEquation(inputValue);
 
 	if (equationReg.test(inputString) === true) {
 		if (eventInput === "=" || event.key === "Enter") {
@@ -131,7 +132,8 @@ function output(event) {
 	equals.removeEventListener('click', buildEquation);
 }
 
-function build1NumEquation() {
+function build1NumEquation(inputValue) {
+
 		let inputString = inputValue.join("");
 		let match = sqrtEquationReg.exec(inputString);
 		let num1 = parseFloat(match[1]);
