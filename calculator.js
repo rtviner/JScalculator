@@ -66,7 +66,6 @@ function backspace(event) {
 }
 
 function output(event) {
-	console.log(event);
 	let eventInput;
 
 	if (event.type === "keydown") {
@@ -80,6 +79,13 @@ function output(event) {
 		}
 	}
 
+	if (inputValue.length > 0) {
+		operators.forEach((operator) => {
+			operator.addEventListener('click', output);
+		});
+	}
+	
+
 	if (inputValue.length === 1 && typeof inputValue[0] == "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
 		inputValue.push(eventInput);
 	}
@@ -91,12 +97,7 @@ function output(event) {
 		inputValue.push(eventInput);
 	}
 
-	if (inputValue.length > 0) {
-		operators.forEach((operator) => {
-			operator.addEventListener('click', output);
-		});
-	}
-	
+
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 	let num1 = match[1];
