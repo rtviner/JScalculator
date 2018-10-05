@@ -40,7 +40,17 @@ numbers.forEach((number) => {
 });
 
 decimal.addEventListener('click', output);
- 
+
+operators.forEach((operator) => {
+		operator.addEventListener('click', operatorToggle);
+}); 
+
+function operatorToggle(event) {
+	if (/\d/.test(inputValue) === true && operatorReg.test(inputValue) === false) {
+		output(event);
+	}
+}
+
 allClearBtn.addEventListener('click', function(event) {
 	inputValue = [];
 	outputValue.innerHTML = "";
@@ -66,8 +76,6 @@ function backspace(event) {
 }
 
 function output(event) {
-	console.log("Event:", event);
-
 	let eventInput;
 
 	if (event.type === "keydown") {
@@ -81,13 +89,6 @@ function output(event) {
 		}
 	}
 
-
-	console.log("EventInput:",eventInput);
-
-	
-	console.log("inputValue:",inputValue);
-	console.log("inputValue.length:",inputValue.length);
-
 	if (inputValue.length === 1 && typeof inputValue[0] === "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
 		inputValue.push(eventInput);
 	}
@@ -99,17 +100,6 @@ function output(event) {
 		inputValue.push(eventInput);
 	}
 
-	if (/\d/.test(inputValue) === true) {
-		operators.forEach((operator) => {
-			operator.addEventListener('click', output);
-		});
-	} 
-	else if (/\d/.test(inputValue) === true && operatorReg.test(inputValue) === true) {
-		operators.forEach((operator) => {
-			operator.removeEventListener('click', output);
-		});
-	}
-
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 	let num1 = match[1];
@@ -117,9 +107,8 @@ function output(event) {
 	let num2 = match[3];
 
 	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
-	if (operatorReg.test(inputValue) === true) decimal.addEventListener('click', output);
 	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
-
+	
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 
 	if (sqrtEquationReg.test(inputString) === true) build1NumEquation(inputValue);
@@ -143,16 +132,17 @@ function output(event) {
 	
 	operate(operator, num1, num2);
 	equals.removeEventListener('click', buildEquation);
+	
 }
 
 function build1NumEquation(inputValue) {
 
-		let inputString = inputValue.join("");
-		let match = sqrtEquationReg.exec(inputString);
-		let num1 = parseFloat(match[1]);
-		let operator = match[2];
+	let inputString = inputValue.join("");
+	let match = sqrtEquationReg.exec(inputString);
+	let num1 = parseFloat(match[1]);
+	let operator = match[2];
 
-		operate(operator, num1);
+	operate(operator, num1);
 }
 
 function operate(operator, num1, num2) {
