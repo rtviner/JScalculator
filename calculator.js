@@ -17,13 +17,13 @@ window.addEventListener('keydown', event => {
 	if (/\d/.test(event.key) === true) {
 		output(event);
 	}
-	else if (operatorReg.test(event.key) === true && inputValue.length > 0) {
+	else if (operatorReg.test(event.key) === true && /\d/.test(inputValue) === true && operatorReg.test(inputValue) === false) {
 		output(event);
 	}
 	else if (event.key === "Backspace") {
 		backspace();
 	}
-	else if ((event.key === "=" || event.key === "Enter") && inputValue.length >= 3) {
+	else if ((event.key === "=" || event.key === "Enter") && equationReg.test(inputValue) === true) {
 		output(event);
 	}
 	else if (event.key === ".") {
@@ -66,6 +66,8 @@ function backspace(event) {
 }
 
 function output(event) {
+	console.log(event);
+
 	let eventInput;
 
 	if (event.type === "keydown") {
@@ -79,17 +81,12 @@ function output(event) {
 		}
 	}
 
-	if (inputValue.length > 0) {
-		operators.forEach((operator) => {
-			operator.addEventListener('click', output);
-		});
-	} 
-	else if (inputValue.length < 1) {
-		operators.forEach((operator) => {
-			operator.removeEventListener('click', output);
-		});
-	}
+
+	console.log(eventInput);
+
 	
+	console.log(inputValue);
+	console.log(inputValue.length);
 
 	if (inputValue.length === 1 && typeof inputValue[0] == "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
 		inputValue.push(eventInput);
@@ -102,6 +99,16 @@ function output(event) {
 		inputValue.push(eventInput);
 	}
 
+	if (/\d*\.?\d*/.test(inputValue) === true) {
+		operators.forEach((operator) => {
+			operator.addEventListener('click', output);
+		});
+	} 
+	if (operatorReg.test(inputValue) === true) {
+		operators.forEach((operator) => {
+			operator.removeEventListener('click', output);
+		});
+	}
 
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
