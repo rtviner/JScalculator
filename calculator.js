@@ -66,7 +66,7 @@ function backspace(event) {
 }
 
 function output(event) {
-	console.log(event);
+	console.log("Event:", event);
 
 	let eventInput;
 
@@ -82,16 +82,16 @@ function output(event) {
 	}
 
 
-	console.log(eventInput);
+	console.log("EventInput:",eventInput);
 
 	
-	console.log(inputValue);
-	console.log(inputValue.length);
+	console.log("inputValue:",inputValue);
+	console.log("inputValue.length:",inputValue.length);
 
-	if (inputValue.length === 1 && typeof inputValue[0] == "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
+	if (inputValue.length === 1 && typeof inputValue[0] === "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
 		inputValue.push(eventInput);
 	}
-	else if (inputValue.length === 1 && typeof inputValue[0] == "number" && operatorReg.test(eventInput) === false) {
+	else if (inputValue.length === 1 && typeof inputValue[0] === "number" && operatorReg.test(eventInput) === false) {
 		inputValue.pop();
 		inputValue.push(eventInput);
 	}
@@ -99,12 +99,12 @@ function output(event) {
 		inputValue.push(eventInput);
 	}
 
-	if (/\d*\.?\d*/.test(inputValue) === true) {
+	if (/\d/.test(inputValue) === true) {
 		operators.forEach((operator) => {
 			operator.addEventListener('click', output);
 		});
 	} 
-	if (operatorReg.test(inputValue) === true) {
+	else if (/\d/.test(inputValue) === true && operatorReg.test(inputValue) === true) {
 		operators.forEach((operator) => {
 			operator.removeEventListener('click', output);
 		});
