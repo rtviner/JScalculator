@@ -83,7 +83,8 @@ function output(event) {
 		operators.forEach((operator) => {
 			operator.addEventListener('click', output);
 		});
-	} else if (inputValue.length < 1) {
+	} 
+	else if (inputValue.length < 1) {
 		operators.forEach((operator) => {
 			operator.removeEventListener('click', output);
 		});
