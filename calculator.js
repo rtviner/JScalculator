@@ -1,129 +1,145 @@
-let outputValue = document.getElementById('output');
 let numbers = document.querySelectorAll('.num-btn');
 let decimal = document.getElementById('dec-btn')
 let operators = document.querySelectorAll('.op-btn');
+let sqrtBtn = document.getElementById('sqrt');
+let outputValue = document.getElementById('output');
 let equals = document.getElementById('equal-btn');
+let answerBtn = document.getElementById('ans');
 let allClearBtn = document.getElementById('allClear');
 let deleteBtn = document.getElementById('delete');
-let answerBtn = document.getElementById('ans');
-let sqrtBtn = document.getElementById('sqrt');
-let inputValue = [];
-let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
-let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
-let sqrtEquationReg = /(\d*\.?\d*)(\√)/;
-let operatorReg = /[+/*-]/;
 
-window.addEventListener('keydown', event => {
+let inputValue = [];
+
+
+window.addEventListener('keydown', keyFilter) 
+
+function keyFilter(event) {
+	let equationReg = /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/;
+
 	if (/\d/.test(event.key) === true) {
-		output(event);
+		input(event);
 	}
-	else if (operatorReg.test(event.key) === true && /\d/.test(inputValue) === true && operatorReg.test(inputValue) === false) {
-		output(event);
+	else if (/[\+\/\*\-\√]/.test(event.key) === true) {
+		operatorFilter(event);
 	}
 	else if (event.key === "Backspace") {
 		backspace();
 	}
 	else if ((event.key === "=" || event.key === "Enter") && equationReg.test(inputValue) === true) {
-		output(event);
+		buildEquation(inputValue);
 	}
 	else if (event.key === ".") {
-		if (inputValue.indexOf('.') === -1) {
-			output(event);
-		} else if (operatorReg.test(inputValue) === true && inputValue.join("").match(/\./g).length < 2) {
-			output(event);
-		}
+		decimalFilter(event);
 	}
-});
+}
 
 numbers.forEach((number) => {
-	number.addEventListener('click', output);
+	number.addEventListener('click', input);
 });
 
-decimal.addEventListener('click', output);
+decimal.addEventListener('click', decimalFilter);
+
+function decimalFilter(event) {
+	if (/\./.test(inputValue) === false) {
+		input(event);
+	} else if (/[+/*-]+\d*\.{1}/.test(inputValue) === false) {
+		input(event);
+	}		
+}
 
 operators.forEach((operator) => {
-		operator.addEventListener('click', operatorToggle);
+		operator.addEventListener('click', operatorFilter);
 }); 
 
-function operatorToggle(event) {
-	if (/\d/.test(inputValue) === true && operatorReg.test(inputValue) === false) {
-		output(event);
+function operatorFilter(event) {
+	let sqrtEquationReg = /\d+\.?\d*\√/;
+
+	if (/\d/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
+		input(event);
 	}
+	if (sqrtEquationReg.test(inputValue) === true) build1NumEquation(inputValue);
+}
+
+equals.addEventListener('click', equalsFilter);
+
+function equalsFilter(event) {
+	console.log("inputValue3:", inputValue);
+	if (/[\+\/\*\-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
 }
 
 allClearBtn.addEventListener('click', function(event) {
 	inputValue = [];
 	outputValue.innerHTML = "";
-	decimal.addEventListener('click', output);
+	decimal.addEventListener('click', decimalFilter);
 });
 
 deleteBtn.addEventListener('click', backspace); 
 
-answerBtn.addEventListener('click', output);
+answerBtn.addEventListener('click', input);
 
 function backspace(event) {
 	inputValue.pop();
-
-	let inputString = inputValue.join("");
-	let match = outputReg.exec(inputString);
-
-	let num1 = match[1];
-	let operator = match[2];
-	let num2 = match[3];
-
-	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
-	decimal.addEventListener('click', output);
+	output(inputValue);
 }
 
-function output(event) {
+function input(event) {
+	console.log("event: ", event);
 	let eventInput;
 
 	if (event.type === "keydown") {
 		eventInput = event.key;
+		pushOrPop(eventInput);
 	} 
 	else if (event.type === "click") {
 		if (event.target.innerHTML === "Ans") {
 			eventInput = answerBtn.value;
+			pushOrPop(eventInput);
 		} else {
 			eventInput = event.target.innerHTML;
+			pushOrPop(eventInput);
 		}
 	}
 
-	if (inputValue.length === 1 && typeof inputValue[0] === "number" && (operatorReg.test(eventInput) === true || sqrtEquationReg.test(eventInput) === true)) {
-		inputValue.push(eventInput);
-	}
-	else if (inputValue.length === 1 && typeof inputValue[0] === "number" && operatorReg.test(eventInput) === false) {
-		inputValue.pop();
-		inputValue.push(eventInput);
-	}
+}
+function pushOrPop(eventInput) {
+	console.log("eventInput in pushPop: ", eventInput);
+	console.log("inputVal in pushPop: ", inputValue);
+
+	
+	if (/\d+/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
+		if (/[\+\/\*\-\√]/.test(eventInput) === true) {
+			inputValue.push(eventInput);	
+		} 
+		else if (/\d/.test(eventInput) === true) {
+			inputValue = [eventInput];
+		}
+	} 
 	else {
 		inputValue.push(eventInput);
 	}
 
+	output(inputValue);
+}
+
+
+function output(inputValue) {
+
+	console.log("inputValue in output:", inputValue);
+
+	let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
 	let num1 = match[1];
 	let operator = match[2];
 	let num2 = match[3];
 
-	if (inputValue.indexOf('.') > -1) decimal.removeEventListener('click', output);
-	if (num2.indexOf('.') > -1) decimal.removeEventListener('click', output);
-	
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
-
-	if (sqrtEquationReg.test(inputString) === true) build1NumEquation(inputValue);
-
-	if (equationReg.test(inputString) === true) {
-		if (eventInput === "=" || event.key === "Enter") {
-			buildEquation(event);
-		}
-		else {
-			equals.addEventListener('click', buildEquation);
-		}
-	}
+		console.log("inputValue2:", inputValue);
+	console.log("equation at output?:", /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/.test(inputValue) === true)
 }
 
- function buildEquation() {
+ function buildEquation(inputValue) {
+ 	let equationReg = /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/;
 	let inputString = inputValue.join("");
 	let match = equationReg.exec(inputString);
 	let num1 = parseFloat(match[1]);
@@ -131,12 +147,11 @@ function output(event) {
 	let num2 = parseFloat(match[3]);
 	
 	operate(operator, num1, num2);
-	equals.removeEventListener('click', buildEquation);
-	
+
 }
 
 function build1NumEquation(inputValue) {
-
+	let sqrtEquationReg = /(\d+\.?\d*)(\√)/;
 	let inputString = inputValue.join("");
 	let match = sqrtEquationReg.exec(inputString);
 	let num1 = parseFloat(match[1]);
@@ -175,7 +190,7 @@ function operate(operator, num1, num2) {
 		answerBtn.value = answer;
 	}
    
-	outputValue.innerHTML = inputValue.toString();	
+	output(inputValue);
 }
 
 function add(num1, num2) {
