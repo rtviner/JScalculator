@@ -10,7 +10,6 @@ let deleteBtn = document.getElementById('delete');
 
 let inputValue = [];
 
-
 window.addEventListener('keydown', keyFilter) 
 
 function keyFilter(event) {
@@ -25,8 +24,9 @@ function keyFilter(event) {
 	else if (event.key === "Backspace") {
 		backspace();
 	}
-	else if ((event.key === "=" || event.key === "Enter") && equationReg.test(inputValue) === true) {
-		buildEquation(inputValue);
+	else if (event.key === "=" || event.key === "Enter") {
+		equalsFilter(event);
+		console.log("input value at key filter:", inputValue);
 	}
 	else if (event.key === ".") {
 		decimalFilter(event);
@@ -51,8 +51,10 @@ operators.forEach((operator) => {
 		operator.addEventListener('click', operatorFilter);
 }); 
 
+sqrtBtn.addEventListener('click', operatorFilter);
+
 function operatorFilter(event) {
-	let sqrtEquationReg = /\d+\.?\d*\√/;
+	let sqrtEquationReg = /\d*\.?\d*\√/;
 
 	if (/\d/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
 		input(event);
@@ -63,8 +65,8 @@ function operatorFilter(event) {
 equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
-	console.log("inputValue3:", inputValue);
 	if (/[\+\/\*\-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
+	console.log("input value at equals filter:", inputValue);
 }
 
 allClearBtn.addEventListener('click', function(event) {
@@ -83,48 +85,40 @@ function backspace(event) {
 }
 
 function input(event) {
-	console.log("event: ", event);
 	let eventInput;
 
 	if (event.type === "keydown") {
 		eventInput = event.key;
 		pushOrPop(eventInput);
 	} 
-	else if (event.type === "click") {
-		if (event.target.innerHTML === "Ans") {
-			eventInput = answerBtn.value;
-			pushOrPop(eventInput);
-		} else {
-			eventInput = event.target.innerHTML;
-			pushOrPop(eventInput);
-		}
-	}
-
-}
-function pushOrPop(eventInput) {
-	console.log("eventInput in pushPop: ", eventInput);
-	console.log("inputVal in pushPop: ", inputValue);
-
-	
-	if (/\d+/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
-		if (/[\+\/\*\-\√]/.test(eventInput) === true) {
-			inputValue.push(eventInput);	
-		} 
-		else if (/\d/.test(eventInput) === true) {
-			inputValue = [eventInput];
-		}
+	else if (event.type === "click" && event.target.innerHTML === "Ans") {
+		eventInput = answerBtn.value;
+		pushOrPop(eventInput);
 	} 
 	else {
-		inputValue.push(eventInput);
+		eventInput = event.target.innerHTML;
+		pushOrPop(eventInput);
 	}
 
-	output(inputValue);
+	function pushOrPop(eventInput) {
+		if (typeof inputValue[0] === "number" && /\d+/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
+			if (/[\+\/\*\-\√]/.test(eventInput) === true) {
+				inputValue.push(eventInput);	
+			} 
+			else if (typeof inputValue[0] === "number" && /\d/.test(eventInput) === true) {
+				inputValue = [eventInput];
+			}
+		} 
+		else {
+		inputValue.push(eventInput);
+		}
+	}   
+	output(inputValue);	
+	console.log("inputVal leaving input:", inputValue);
+	
 }
 
-
 function output(inputValue) {
-
-	console.log("inputValue in output:", inputValue);
 
 	let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 	let inputString = inputValue.join("");
@@ -134,12 +128,11 @@ function output(inputValue) {
 	let num2 = match[3];
 
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
-		console.log("inputValue2:", inputValue);
-	console.log("equation at output?:", /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/.test(inputValue) === true)
 }
 
  function buildEquation(inputValue) {
- 	let equationReg = /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/;
+ 	console.log("input value at build equation:", inputValue);
+ 	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
 	let inputString = inputValue.join("");
 	let match = equationReg.exec(inputString);
 	let num1 = parseFloat(match[1]);
@@ -147,11 +140,10 @@ function output(inputValue) {
 	let num2 = parseFloat(match[3]);
 	
 	operate(operator, num1, num2);
-
 }
 
 function build1NumEquation(inputValue) {
-	let sqrtEquationReg = /(\d+\.?\d*)(\√)/;
+	let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
 	let inputString = inputValue.join("");
 	let match = sqrtEquationReg.exec(inputString);
 	let num1 = parseFloat(match[1]);
@@ -222,7 +214,6 @@ function divide(num1, num2) {
 function sqrt(num1) {
 	return Math.sqrt(num1);
 }
-
 
 
 
