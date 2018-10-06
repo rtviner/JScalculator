@@ -25,8 +25,7 @@ function keyFilter(event) {
 		backspace();
 	}
 	else if (event.key === "=" || event.key === "Enter") {
-		equalsFilter(event);
-		console.log("input value at key filter:", inputValue);
+		equalsFilter(event);	
 	}
 	else if (event.key === ".") {
 		decimalFilter(event);
@@ -40,11 +39,15 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	if (/\./.test(inputValue) === false) {
+	if (/\.+/.test(inputValue) === false) {
 		input(event);
-	} else if (/[+/*-]+\d*\.{1}/.test(inputValue) === false) {
+	} 
+	else if (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d*\.+/.test(inputValue) === false) {
 		input(event);
-	}		
+	}
+	else if (typeof inputValue[0] === "number") {
+		input(event);
+	}	
 }
 
 operators.forEach((operator) => {
@@ -66,13 +69,11 @@ equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
 	if (/[\+\/\*\-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
-	console.log("input value at equals filter:", inputValue);
 }
 
 allClearBtn.addEventListener('click', function(event) {
 	inputValue = [];
 	outputValue.innerHTML = "";
-	decimal.addEventListener('click', decimalFilter);
 });
 
 deleteBtn.addEventListener('click', backspace); 
@@ -105,7 +106,7 @@ function input(event) {
 			if (/[\+\/\*\-\√]/.test(eventInput) === true) {
 				inputValue.push(eventInput);	
 			} 
-			else if (typeof inputValue[0] === "number" && /\d/.test(eventInput) === true) {
+			else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
 				inputValue = [eventInput];
 			}
 		} 
@@ -113,13 +114,10 @@ function input(event) {
 		inputValue.push(eventInput);
 		}
 	}   
-	output(inputValue);	
-	console.log("inputVal leaving input:", inputValue);
-	
+	output(inputValue);		
 }
 
 function output(inputValue) {
-
 	let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
 	let inputString = inputValue.join("");
 	let match = outputReg.exec(inputString);
@@ -131,7 +129,6 @@ function output(inputValue) {
 }
 
  function buildEquation(inputValue) {
- 	console.log("input value at build equation:", inputValue);
  	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
 	let inputString = inputValue.join("");
 	let match = equationReg.exec(inputString);
