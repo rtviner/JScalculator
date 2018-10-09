@@ -39,15 +39,8 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	if (/\.+/.test(inputValue) === false) {
+	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number")) 
 		input(event);
-	} 
-	else if (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d*\.+/.test(inputValue) === false) {
-		input(event);
-	}
-	else if (typeof inputValue[0] === "number") {
-		input(event);
-	}	
 }
 
 operators.forEach((operator) => {
@@ -89,19 +82,18 @@ function input(event) {
 	let eventInput;
 
 	if (event.type === "keydown") {
-		eventInput = event.key;
-		pushOrPop(eventInput);
+		eventInput = event.key;	
 	} 
 	else if (event.type === "click" && event.target.innerHTML === "Ans") {
-		eventInput = answerBtn.value;
-		pushOrPop(eventInput);
+		eventInput = answerBtn.value;	
 	} 
 	else {
 		eventInput = event.target.innerHTML;
-		pushOrPop(eventInput);
 	}
 
-	function pushOrPop(eventInput) {
+	pushOrClear(eventInput);
+	// push or clear now for post answer
+	function pushOrClear(eventInput) {
 		if (typeof inputValue[0] === "number" && /\d+/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
 			if (/[\+\/\*\-\√]/.test(eventInput) === true) {
 				inputValue.push(eventInput);	
@@ -109,11 +101,12 @@ function input(event) {
 			else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
 				inputValue = [eventInput];
 			}
-		} 
+		}
 		else {
-		inputValue.push(eventInput);
+			inputValue.push(eventInput);
 		}
 	}   
+
 	output(inputValue);		
 }
 
