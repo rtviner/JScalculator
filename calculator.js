@@ -39,7 +39,7 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number")) 
+	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[\+\-\/\*]\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number" && inputValue.length === 1)) 
 		input(event);
 }
 
@@ -92,18 +92,13 @@ function input(event) {
 	}
 
 	pushOrClear(eventInput);
-	// push or clear now for post answer
+
 	function pushOrClear(eventInput) {
-		if (typeof inputValue[0] === "number" && /\d+/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
-			if (/[\+\/\*\-\√]/.test(eventInput) === true) {
-				inputValue.push(eventInput);	
-			} 
-			else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
-				inputValue = [eventInput];
-			}
-		}
-		else {
-			inputValue.push(eventInput);
+		if (typeof inputValue[0] !== "number" || inputValue.length > 1 || (typeof inputValue[0] === "number" && /[\+\/\*\-\√]/.test(eventInput) === true)) {
+			inputValue.push(eventInput);	
+		} 
+		else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
+			inputValue = [eventInput];
 		}
 	}   
 
