@@ -18,7 +18,7 @@ function keyFilter(event) {
 	if (/\d/.test(event.key) === true) {
 		input(event);
 	}
-	else if (/[\+\/\*\-\√]/.test(event.key) === true) {
+	else if (/[√+/*-]/.test(event.key) === true) {
 		operatorFilter(event);
 	}
 	else if (event.key === "Backspace") {
@@ -39,7 +39,7 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[\+\-\/\*]\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number" && inputValue.length === 1)) 
+	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number" && inputValue.length === 1)) 
 		input(event);
 }
 
@@ -52,7 +52,7 @@ sqrtBtn.addEventListener('click', operatorFilter);
 function operatorFilter(event) {
 	let sqrtEquationReg = /\d*\.?\d*\√/;
 
-	if (/\d/.test(inputValue) === true && /[\+\/\*\-\√]/.test(inputValue) === false) {
+	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue) === false) {
 		input(event);
 	}
 	if (sqrtEquationReg.test(inputValue) === true) build1NumEquation(inputValue);
@@ -61,7 +61,7 @@ function operatorFilter(event) {
 equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
-	if (/[\+\/\*\-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
+	if (/[+/*-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
 }
 
 allClearBtn.addEventListener('click', function(event) {
@@ -94,7 +94,7 @@ function input(event) {
 	pushOrClear(eventInput);
 
 	function pushOrClear(eventInput) {
-		if (typeof inputValue[0] !== "number" || inputValue.length > 1 || (typeof inputValue[0] === "number" && /[\+\/\*\-\√]/.test(eventInput) === true)) {
+		if (typeof inputValue[0] !== "number" || inputValue.length > 1 || (typeof inputValue[0] === "number" && /[√+/*-]/.test(eventInput) === true)) {
 			inputValue.push(eventInput);	
 		} 
 		else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
