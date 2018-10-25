@@ -12,9 +12,9 @@ Use the keyboard or mouse to input numbers, decimals, and operators for simple m
 
 AC:  All clear, click this button to clear everything from the screen
 
-DEL:  Backspace, click this button or press the "delete" key to erase the last number,decimal, 		or operator on the screen
+DEL:  Backspace, click this button or press the "delete" key to erase the last number, 				decimal, or operator on the screen
 
-Ans: Stores the answer to the last operation.  Click this button if you would like to perform 		another operation with the answer from the last problem.
+Ans: Stores the answer to the last operation. Click this button if you would like to perform 		another operation with the answer from the last problem.
 
 √:  Square root.  Click or type a number then press the square root button to calculate the 	square root of the preceeding number
 
