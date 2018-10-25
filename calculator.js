@@ -71,7 +71,15 @@ allClearBtn.addEventListener('click', function(event) {
 
 deleteBtn.addEventListener('click', backspace); 
 
-answerBtn.addEventListener('click', input);
+answerBtn.addEventListener('click', answerFilter);
+
+function answerFilter(event) {
+	if (/[+/*-]{1}/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d+/.test(inputValue) === false) {
+		input(event);
+	} else if (inputValue.length === 0) {
+		input(event)
+	}
+}
 
 function backspace(event) {
 	inputValue.pop();
