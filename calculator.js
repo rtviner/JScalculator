@@ -13,8 +13,6 @@ let inputValue = [];
 window.addEventListener('keydown', keyFilter) 
 
 function keyFilter(event) {
-	let equationReg = /(\d+\.?\d*)([+/*-]{1})(\d+\.?\d*)/;
-
 	if (/\d/.test(event.key) === true) {
 		input(event);
 	}
