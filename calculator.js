@@ -53,7 +53,7 @@ function operatorFilter(event) {
 	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue) === false) {
 		input(event);
 	}
-	if (sqrtEquationReg.test(inputValue) === true) build1NumEquation(inputValue);
+	if (sqrtEquationReg.test(inputValue) === true) buildEquation(inputValue);
 }
 
 equals.addEventListener('click', equalsFilter);
@@ -122,25 +122,29 @@ function output(inputValue) {
 	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 }
 
- function buildEquation(inputValue) {
- 	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
-	let inputString = inputValue.join("");
-	let match = equationReg.exec(inputString);
-	let num1 = parseFloat(match[1]);
-	let operator = match[2];
-	let num2 = parseFloat(match[3]);
-	
-	operate(operator, num1, num2);
-}
+function buildEquation(inputValue) {
+ 	
+ 	if (/\d*\.?\d*\√/.test(inputValue) === true){
+ 		let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
 
-function build1NumEquation(inputValue) {
-	let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
-	let inputString = inputValue.join("");
-	let match = sqrtEquationReg.exec(inputString);
-	let num1 = parseFloat(match[1]);
-	let operator = match[2];
+ 		let inputString = inputValue.join("");
+		let match = sqrtEquationReg.exec(inputString);
+		let num1 = parseFloat(match[1]);
+		let operator = match[2];
 
-	operate(operator, num1);
+		operate(operator, num1);
+ 	}
+ 	else {
+	 	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
+	 	
+		let inputString = inputValue.join("");
+		let match = equationReg.exec(inputString);
+		let num1 = parseFloat(match[1]);
+		let operator = match[2];
+		let num2 = parseFloat(match[3]);
+		
+		operate(operator, num1, num2);
+ 	}
 }
 
 function operate(operator, num1, num2) {
