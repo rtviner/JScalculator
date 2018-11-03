@@ -50,7 +50,7 @@ sqrtBtn.addEventListener('click', operatorFilter);
 function operatorFilter(event) {
 	let sqrtEquationReg = /\d*\.?\d*\√/;
 
-	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue) === false) {
+	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue[inputValue.length - 1]) === false) {
 		input(event);
 	}
 	if (sqrtEquationReg.test(inputValue) === true) buildEquation(inputValue);
@@ -118,8 +118,9 @@ function output(inputValue) {
 	let num1 = match[1];
 	let operator = match[2];
 	let num2 = match[3];
+	let num3 = match[4];
 
-	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2 + operator + ' ' + num3;
 }
 
 function buildEquation(inputValue) {
