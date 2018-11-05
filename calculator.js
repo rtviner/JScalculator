@@ -100,11 +100,19 @@ function input(event) {
 	pushOrClear(eventInput);
 
 	function pushOrClear(eventInput) {
-		if (typeof inputValue[0] !== "number" || inputValue.length > 1 || (typeof inputValue[0] === "number" && /[√+/*-]/.test(eventInput) === true)) {
-			inputValue.push(eventInput);	
-		} 
-		else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
-			inputValue = [eventInput];
+		if (/[√+/*-]/.test(eventInput) === true) {
+			if (inputValue.length >= 1 || inputValue[0] === "number") {
+				eventInput = " " + eventInput + " ";
+				inputValue.push(eventInput);	
+			}
+		}			
+		else if (/[√+/*-]/.test(eventInput) === false) {
+			if (typeof inputValue[0] !== "number" || inputValue.length > 1)  {
+				inputValue.push(eventInput);	
+			} 
+			else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
+				inputValue = [eventInput];
+			}
 		}
 	}   
 
@@ -112,15 +120,16 @@ function input(event) {
 }
 
 function output(inputValue) {
-	let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
-	let inputString = inputValue.join("");
-	let match = outputReg.exec(inputString);
-	let num1 = match[1];
-	let operator = match[2];
-	let num2 = match[3];
-	let num3 = match[4];
-
-	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2 + operator + ' ' + num3;
+	
+	outputValue.innerHTML = inputValue.join("");
+	// let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
+	// let inputString = inputValue.join("");
+	// let match = outputReg.exec(inputString);
+	// let num1 = match[1];
+	// let operator = match[2];
+	// let num2 = match[3];
+	
+	// outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
 }
 
 function buildEquation(inputValue) {
@@ -136,7 +145,7 @@ function buildEquation(inputValue) {
 		operate(operator, num1);
  	}
  	else {
-	 	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
+	 	let equationReg = /(\d*\.?\d*)\s([+/*-]{1})\s(\d*\.?\d*)/;
 	 	
 		let inputString = inputValue.join("");
 		let match = equationReg.exec(inputString);
