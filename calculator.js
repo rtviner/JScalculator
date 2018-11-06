@@ -37,8 +37,21 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number" && inputValue.length === 1)) 
+	
+	if (/\.+/.test(inputValue.join("")) === false) {
 		input(event);
+	}
+	else {
+		let lastNum = inputValue.join("").replace(/\d*\.*\d*\s[-+/*]\s/g, "");
+			if (lastNum.indexOf(".") === -1) {
+				input(event);
+			}
+	}
+		//check if there is an operator and no decimal after the operator...
+		
+
+		// (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue.join("")) === true && /[+/*-]\s*\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue.join("")) === false)) 
+		
 }
 
 operators.forEach((operator) => {
@@ -120,16 +133,7 @@ function input(event) {
 }
 
 function output(inputValue) {
-	
-	outputValue.innerHTML = inputValue.join("");
-	// let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
-	// let inputString = inputValue.join("");
-	// let match = outputReg.exec(inputString);
-	// let num1 = match[1];
-	// let operator = match[2];
-	// let num2 = match[3];
-	
-	// outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2;
+		outputValue.innerHTML = inputValue.join("");
 }
 
 function buildEquation(inputValue) {
