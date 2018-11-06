@@ -38,12 +38,12 @@ decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
 	// test if there is a decimal at all
-	if (/\.+/.test(inputValue.join("")) === false) {
+	if (/\.+/.test(outputValue.innerHTML) === false) {
 		input(event);
 	}
 	// grab the last number of the string and check that number for a decimal
 	else {
-		let lastNum = inputValue.join("").replace(/\d*\.*\d*\s[-+/*]\s/g, "");
+		let lastNum = outputValue.innerHTML.replace(/\d*\.*\d*\s[-+/*]\s/g, "");
 			if (lastNum.indexOf(".") === -1) {
 				input(event);
 			}
@@ -58,17 +58,17 @@ sqrtBtn.addEventListener('click', operatorFilter);
 
 function operatorFilter(event) {
 	let sqrtEquationReg = /\d*\.?\d*\√/;
-
-	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue[inputValue.length - 1]) === false) {
+	// if there is a number in the input value and the last input was not an operator allow an operator
+	if (/\d/.test(outputValue.innerHTML) === true && /[√+/*-]/.test(outputValue.innerHTML[outputValue.innerHTML.length - 1]) === false) {
 		input(event);
 	}
-	if (sqrtEquationReg.test(inputValue) === true) buildEquation(inputValue);
+	if (sqrtEquationReg.test(outputValue.innerHTML) === true) buildEquation(inputValue);
 }
 
 equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
-	if (/[+/*-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
+	if (/[+/*-]\d*\.?\d*/.test(outputValue.innerHTML) === true) buildEquation(inputValue);
 }
 
 allClearBtn.addEventListener('click', function(event) {
@@ -81,10 +81,16 @@ deleteBtn.addEventListener('click', backspace);
 answerBtn.addEventListener('click', answerFilter);
 
 function answerFilter(event) {
-	if (/[+/*-]{1}/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d+/.test(inputValue) === false) {
-		input(event);
-	} else if (inputValue.length === 0) {
+	// check if there is an operator present and make sure there is not already a number after the operator
+	if (outputValue.innerHTML.length === 0) {
 		input(event)
+	}
+	else {
+		let lastNum = outputValue.innerHTML.replace(/\d*\.*\d*\s[-+/*]\s/g, "");
+
+		if (lastNum.length === 0) {
+				input(event);
+		}
 	}
 }
 
@@ -134,11 +140,10 @@ function output(inputValue) {
 
 function buildEquation(inputValue) {
  	
- 	if (/\d*\.?\d*\√/.test(inputValue) === true){
+ 	if (/\d*\.?\d*\√/.test(outputValue.innerHTML) === true){
  		let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
-
- 		let inputString = inputValue.join("");
-		let match = sqrtEquationReg.exec(inputString);
+;
+		let match = sqrtEquationReg.exec(outputValue.innerHTML);
 		let num1 = parseFloat(match[1]);
 		let operator = match[2];
 
@@ -147,8 +152,7 @@ function buildEquation(inputValue) {
  	else {
 	 	let equationReg = /(\d*\.?\d*)\s([+/*-]{1})\s(\d*\.?\d*)/;
 	 	
-		let inputString = inputValue.join("");
-		let match = equationReg.exec(inputString);
+		let match = equationReg.exec(outputValue.innerHTML);
 		let num1 = parseFloat(match[1]);
 		let operator = match[2];
 		let num2 = parseFloat(match[3]);
