@@ -58,17 +58,18 @@ sqrtBtn.addEventListener('click', operatorFilter);
 
 function operatorFilter(event) {
 	let sqrtEquationReg = /\d*\.?\d*\√/;
-	// if there is a number in the input value and the last input was not an operator allow an operator
+	// if there is a number in the output html and the last input was not an operator allow an operator in the output
 	if (/\d/.test(outputValue.innerHTML) === true && /[√+/*-]/.test(outputValue.innerHTML[outputValue.innerHTML.length - 1]) === false) {
 		input(event);
 	}
-	if (sqrtEquationReg.test(outputValue.innerHTML) === true) buildEquation(inputValue);
+	if (sqrtEquationReg.test(outputValue.innerHTML) === true) buildEquation();
 }
 
 equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
-	if (/[+/*-]\d*\.?\d*/.test(outputValue.innerHTML) === true) buildEquation(inputValue);
+	// if there is an operator with 0 or 1 decimals and 1 or more digits send the inputValue to the buildEquation formula
+	if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML) === true) buildEquation();
 }
 
 allClearBtn.addEventListener('click', function(event) {
@@ -138,7 +139,7 @@ function output(inputValue) {
 		outputValue.innerHTML = inputValue.join("");
 }
 
-function buildEquation(inputValue) {
+function buildEquation() {
  	
  	if (/\d*\.?\d*\√/.test(outputValue.innerHTML) === true){
  		let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
