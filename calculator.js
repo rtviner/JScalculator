@@ -37,21 +37,17 @@ numbers.forEach((number) => {
 decimal.addEventListener('click', decimalFilter);
 
 function decimalFilter(event) {
-	
+	// test if there is a decimal at all
 	if (/\.+/.test(inputValue.join("")) === false) {
 		input(event);
 	}
+	// grab the last number of the string and check that number for a decimal
 	else {
 		let lastNum = inputValue.join("").replace(/\d*\.*\d*\s[-+/*]\s/g, "");
 			if (lastNum.indexOf(".") === -1) {
 				input(event);
 			}
 	}
-		//check if there is an operator and no decimal after the operator...
-		
-
-		// (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue.join("")) === true && /[+/*-]\s*\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue.join("")) === false)) 
-		
 }
 
 operators.forEach((operator) => {
