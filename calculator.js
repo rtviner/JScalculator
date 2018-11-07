@@ -57,7 +57,7 @@ operators.forEach((operator) => {
 sqrtBtn.addEventListener('click', operatorFilter);
 
 function operatorFilter(event) {
-	let sqrtEquationReg = /\d*\.?\d*\√/;
+	let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
 	// if there is a number in the output html and the last input was not an operator allow an operator in the output
 	if (/\d/.test(outputValue.innerHTML) === true && /[√+/*-]/.test(outputValue.innerHTML[outputValue.innerHTML.length - 1]) === false) {
 		input(event);
@@ -146,21 +146,20 @@ function output(inputValue) {
 }
 
 function calculate(inputString) {
- 
-  let regMD = /[\/\*]+/g;
-  let regAS = /[+-]+/g; 
-  let outputRegMD = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
-  let outputRegAS = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
-  let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
-  //check if there is an operator with a space after it (more equations to solve)
-  if (/\d*\.?\d*\√/.test(inputString) === true){
+  let sqrtEquationReg = /(\d*\.?\d+)\s{1}\√{1}/;
+  
+  if (sqrtEquationReg.test(inputString) === true) {
     let match = sqrtEquationReg.exec(inputString);
     let num1 = parseFloat(match[1]);
-    let operator = match[2];
-    sqrt(num1);;
+    inputString = sqrt(num1);
+    answer(inputString);
   }
-
+	//check if there is an operator with a space after it (more equations to solve)
   if (/[+\/*-]{1}\s/.test(inputString) !== false) {
+  	let regMD = /[\/\*]+/g;
+  	let regAS = /[+-]+/g; 
+  	let outputRegMD = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
+  	let outputRegAS = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
     //if there is a multiplication or division equation do those first
     if (/[\/\*]+/.test(inputString) === true) {
         //assign the left and right sides of the equation and operator to variables;
@@ -202,17 +201,7 @@ function calculate(inputString) {
   }
   // if there are no operators (with spaces after them) left then return the answer
   else {
-    let answer = inputString;
-    if (answer.toString().length > 20) {
-      inputValue = [answer.toExponential()];
-      answerBtn.value = answer.toExponential();
-    }
-    else {
-      inputValue = [answer];
-      answerBtn.value = answer;
-    }
-   
-    output(inputValue);
+  	answer(inputString);
   }
 }
 
@@ -244,6 +233,21 @@ function divide(num1, num2) {
 
 function sqrt(num1) {
 	return Math.sqrt(num1);
+}
+
+function answer(inputString) {
+	let answer = inputString;
+
+    if (answer.toString().length > 20) {
+      inputValue = [answer.toExponential()];
+      answerBtn.value = answer.toExponential();
+    }
+    else {
+      inputValue = [answer];
+      answerBtn.value = answer;
+    }
+   
+    output(inputValue);
 }
 
 
