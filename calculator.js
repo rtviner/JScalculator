@@ -62,14 +62,20 @@ function operatorFilter(event) {
 	if (/\d/.test(outputValue.innerHTML) === true && /[√+/*-]/.test(outputValue.innerHTML[outputValue.innerHTML.length - 1]) === false) {
 		input(event);
 	}
-	if (sqrtEquationReg.test(outputValue.innerHTML) === true) buildEquation();
+	if (sqrtEquationReg.test(outputValue.innerHTML) === true) {
+		let inputString = outputValue.innerHTML;
+		calculate(inputString);
+	}
 }
 
 equals.addEventListener('click', equalsFilter);
 
 function equalsFilter(event) {
-	// if there is an operator with 0 or 1 decimals and 1 or more digits send the inputValue to the buildEquation formula
-	if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML) === true) buildEquation();
+	// if there is an operator with 0 or 1 decimals and 1 or more digits call the calculate formula
+	if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML) === true) {
+		let inputString = outputValue.innerHTML;
+		calculate(inputString);
+	}
 }
 
 allClearBtn.addEventListener('click', function(event) {
@@ -139,60 +145,75 @@ function output(inputValue) {
 		outputValue.innerHTML = inputValue.join("");
 }
 
-function buildEquation() {
- 	
- 	if (/\d*\.?\d*\√/.test(outputValue.innerHTML) === true){
- 		let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
-;
-		let match = sqrtEquationReg.exec(outputValue.innerHTML);
-		let num1 = parseFloat(match[1]);
-		let operator = match[2];
+function calculate(inputString) {
+ 
+  let regMD = /[\/\*]+/g;
+  let regAS = /[+-]+/g; 
+  let outputRegMD = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
+  let outputRegAS = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
+  let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
+  //check if there is an operator with a space after it (more equations to solve)
+  if (/\d*\.?\d*\√/.test(inputString) === true){
+    let match = sqrtEquationReg.exec(inputString);
+    let num1 = parseFloat(match[1]);
+    let operator = match[2];
+    sqrt(num1);;
+  }
 
-		operate(operator, num1);
- 	}
- 	else {
-	 	let equationReg = /(\d*\.?\d*)\s([+/*-]{1})\s(\d*\.?\d*)/;
-	 	
-		let match = equationReg.exec(outputValue.innerHTML);
-		let num1 = parseFloat(match[1]);
-		let operator = match[2];
-		let num2 = parseFloat(match[3]);
-		
-		operate(operator, num1, num2);
- 	}
-}
-
-function operate(operator, num1, num2) {
-	let answer;
-
-	switch (operator) {
-		case "+":
-			answer = add(num1, num2);
-			break;
-		case "-":
-			answer = subtract(num1, num2);
-			break;
-		case "*":
-			answer = multiply(num1, num2);
-			break;
-		case "/":
-			answer = divide(num1, num2);
-			break;
-		case "√":
-			answer = sqrt(num1);
-			break;
-	}
-
-	if (answer.toString().length > 20) {
-		inputValue = [answer.toExponential()];
-		answerBtn.value = answer.toExponential();
-	}
-	else {
-		inputValue = [answer];
-		answerBtn.value = answer;
-	}
+  if (/[+\/*-]{1}\s/.test(inputString) !== false) {
+    //if there is a multiplication or division equation do those first
+    if (/[\/\*]+/.test(inputString) === true) {
+        //assign the left and right sides of the equation and operator to variables;
+      let match = outputRegMD.exec(inputString);
+      let num1 = parseFloat(match[1]);
+      let operator = match[2];
+      let num2 = parseFloat(match[3]);
+      
+      if (operator === "/") {
+        // replace entire equation match with divide(num1, num2)
+        inputString = inputString.replace(outputRegMD, divide(num1, num2));
+        calculate(inputString);
+      }
+      else {
+      //replace entire equation match with multiply(num1, num2)
+        inputString = inputString.replace(outputRegMD, multiply(num1, num2));
+        calculate(inputString);
+      }
+    }
+    //if there is a multiplication or division equation do that next
+    else if (/[+-]+/.test(inputString) === true) {
+        //assign the left and right sides of the equation and operator to variables;
+      let match = outputRegAS.exec(inputString);
+      let num1 = parseFloat(match[1]);
+      let operator = match[2];
+      let num2 = parseFloat(match[3]);
+  
+      if (operator === "+") {
+        //replace entire equation match with add(num1, num2)
+        inputString = inputString.replace(outputRegAS, add(num1, num2));
+        calculate(inputString);
+      }
+      else {
+         //replace entire equation match with subtract(num1, num2)
+        inputString = inputString.replace(outputRegAS, subtract(num1, num2));
+        calculate(inputString);
+      }
+    }
+  }
+  // if there are no operators (with spaces after them) left then return the answer
+  else {
+    let answer = inputString;
+    if (answer.toString().length > 20) {
+      inputValue = [answer.toExponential()];
+      answerBtn.value = answer.toExponential();
+    }
+    else {
+      inputValue = [answer];
+      answerBtn.value = answer;
+    }
    
-	output(inputValue);
+    output(inputValue);
+  }
 }
 
 function add(num1, num2) {
