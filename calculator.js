@@ -36,6 +36,23 @@ numbers.forEach((number) => {
 
 decimal.addEventListener('click', decimalFilter);
 
+operators.forEach((operator) => {
+		operator.addEventListener('click', operatorFilter);
+}); 
+
+sqrtBtn.addEventListener('click', operatorFilter);
+
+equals.addEventListener('click', equalsFilter);
+
+allClearBtn.addEventListener('click', function(event) {
+	inputValue = [];
+	outputValue.innerHTML = "";
+});
+
+deleteBtn.addEventListener('click', backspace); 
+
+answerBtn.addEventListener('click', answerFilter);
+
 function decimalFilter(event) {
 	// test if there is a decimal at all
 	if (/\.+/.test(outputValue.innerHTML) === false) {
@@ -50,12 +67,6 @@ function decimalFilter(event) {
 	}
 }
 
-operators.forEach((operator) => {
-		operator.addEventListener('click', operatorFilter);
-}); 
-
-sqrtBtn.addEventListener('click', operatorFilter);
-
 function operatorFilter(event) {
 	let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
 	// if there is a number in the output html and the last input was not an operator allow an operator in the output
@@ -68,8 +79,6 @@ function operatorFilter(event) {
 	}
 }
 
-equals.addEventListener('click', equalsFilter);
-
 function equalsFilter(event) {
 	// if there is an operator with 0 or 1 decimals and 1 or more digits call the calculate formula
 	if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML) === true) {
@@ -77,15 +86,6 @@ function equalsFilter(event) {
 		calculate(inputString);
 	}
 }
-
-allClearBtn.addEventListener('click', function(event) {
-	inputValue = [];
-	outputValue.innerHTML = "";
-});
-
-deleteBtn.addEventListener('click', backspace); 
-
-answerBtn.addEventListener('click', answerFilter);
 
 function answerFilter(event) {
 	// check if there is an operator present and make sure there is not already a number after the operator
