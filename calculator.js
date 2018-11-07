@@ -154,8 +154,12 @@ function calculate(inputString) {
     inputString = sqrt(num1);
     answer(inputString);
   }
-	//check if there is an operator with a space after it (more equations to solve)
-  if (/[+\/*-]{1}\s/.test(inputString) !== false) {
+	// if there are no operators (with spaces after them) left then return the answer
+  if (/[+\/*-]{1}\s/.test(inputString) === false) {
+  	answer(inputString);
+  }
+  //otherwise keep solvin equations
+  else {
   	let regMD = /[\/\*]+/g;
   	let regAS = /[+-]+/g; 
   	let outputRegMD = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
@@ -198,11 +202,7 @@ function calculate(inputString) {
         calculate(inputString);
       }
     }
-  }
-  // if there are no operators (with spaces after them) left then return the answer
-  else {
-  	answer(inputString);
-  }
+  } 
 }
 
 function add(num1, num2) {
