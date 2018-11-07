@@ -36,31 +36,13 @@ numbers.forEach((number) => {
 
 decimal.addEventListener('click', decimalFilter);
 
-function decimalFilter(event) {
-	if (/\.+/.test(inputValue) === false || (/[+/*-]{1}\"*\,*\s*\"*\d*/.test(inputValue) === true && /[+/*-]\"*\,*\s*\"*\d*\"*\,*\s*\"*\.+/.test(inputValue) === false) || (typeof inputValue[0] === "number" && inputValue.length === 1)) 
-		input(event);
-}
-
 operators.forEach((operator) => {
 		operator.addEventListener('click', operatorFilter);
 }); 
 
 sqrtBtn.addEventListener('click', operatorFilter);
 
-function operatorFilter(event) {
-	let sqrtEquationReg = /\d*\.?\d*\√/;
-
-	if (/\d/.test(inputValue) === true && /[√+/*-]/.test(inputValue[inputValue.length - 1]) === false) {
-		input(event);
-	}
-	if (sqrtEquationReg.test(inputValue) === true) buildEquation(inputValue);
-}
-
 equals.addEventListener('click', equalsFilter);
-
-function equalsFilter(event) {
-	if (/[+/*-]\d*\.?\d*/.test(inputValue) === true) buildEquation(inputValue);
-}
 
 allClearBtn.addEventListener('click', function(event) {
 	inputValue = [];
@@ -71,11 +53,51 @@ deleteBtn.addEventListener('click', backspace);
 
 answerBtn.addEventListener('click', answerFilter);
 
-function answerFilter(event) {
-	if (/[+/*-]{1}/.test(inputValue) === true && /[+/*-]{1}\"*\,*\s*\"*\d+/.test(inputValue) === false) {
+function decimalFilter(event) {
+	// test if there is a decimal at all
+	if (/\.+/.test(outputValue.innerHTML) === false) {
 		input(event);
-	} else if (inputValue.length === 0) {
+	}
+	// grab the last number of the string and check that number for a decimal
+	else {
+		let lastNum = outputValue.innerHTML.replace(/\d*\.*\d*\s[-+/*]\s/g, "");
+			if (lastNum.indexOf(".") === -1) {
+				input(event);
+			}
+	}
+}
+
+function operatorFilter(event) {
+	let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
+	// if there is a number in the output html and the last input was not an operator allow an operator in the output
+	if (/\d/.test(outputValue.innerHTML) === true && /[√+/*-]/.test(outputValue.innerHTML[outputValue.innerHTML.length - 1]) === false) {
+		input(event);
+	}
+	if (sqrtEquationReg.test(outputValue.innerHTML) === true) {
+		let inputString = outputValue.innerHTML;
+		calculate(inputString);
+	}
+}
+
+function equalsFilter(event) {
+	// if there is an operator with 0 or 1 decimals and 1 or more digits call the calculate formula
+	if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML) === true) {
+		let inputString = outputValue.innerHTML;
+		calculate(inputString);
+	}
+}
+
+function answerFilter(event) {
+	// check if there is an operator present and make sure there is not already a number after the operator
+	if (outputValue.innerHTML.length === 0) {
 		input(event)
+	}
+	else {
+		let lastNum = outputValue.innerHTML.replace(/\d*\.*\d*\s[-+/*]\s/g, "");
+
+		if (lastNum.length === 0) {
+				input(event);
+		}
 	}
 }
 
@@ -100,11 +122,19 @@ function input(event) {
 	pushOrClear(eventInput);
 
 	function pushOrClear(eventInput) {
-		if (typeof inputValue[0] !== "number" || inputValue.length > 1 || (typeof inputValue[0] === "number" && /[√+/*-]/.test(eventInput) === true)) {
-			inputValue.push(eventInput);	
-		} 
-		else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
-			inputValue = [eventInput];
+		if (/[√+/*-]/.test(eventInput) === true) {
+			if (inputValue.length >= 1 || inputValue[0] === "number") {
+				eventInput = " " + eventInput + " ";
+				inputValue.push(eventInput);	
+			}
+		}			
+		else if (/[√+/*-]/.test(eventInput) === false) {
+			if (typeof inputValue[0] !== "number" || inputValue.length > 1)  {
+				inputValue.push(eventInput);	
+			} 
+			else if (typeof inputValue[0] === "number" && /\d|\./.test(eventInput) === true) {
+				inputValue = [eventInput];
+			}
 		}
 	}   
 
@@ -112,73 +142,67 @@ function input(event) {
 }
 
 function output(inputValue) {
-	let outputReg = /(\d*\.?\d*)([+/*-]?)(\d*\.?\d*)/;
-	let inputString = inputValue.join("");
-	let match = outputReg.exec(inputString);
-	let num1 = match[1];
-	let operator = match[2];
-	let num2 = match[3];
-	let num3 = match[4];
-
-	outputValue.innerHTML = num1 + ' ' + operator + ' ' + num2 + operator + ' ' + num3;
+		outputValue.innerHTML = inputValue.join("");
 }
 
-function buildEquation(inputValue) {
- 	
- 	if (/\d*\.?\d*\√/.test(inputValue) === true){
- 		let sqrtEquationReg = /(\d+\.*\d*)\,*\s*\"*(\√+)\"*/;
-
- 		let inputString = inputValue.join("");
-		let match = sqrtEquationReg.exec(inputString);
-		let num1 = parseFloat(match[1]);
-		let operator = match[2];
-
-		operate(operator, num1);
- 	}
- 	else {
-	 	let equationReg = /(\d*\.?\d*)([+/*-]{1})(\d*\.?\d*)/;
-	 	
-		let inputString = inputValue.join("");
-		let match = equationReg.exec(inputString);
-		let num1 = parseFloat(match[1]);
-		let operator = match[2];
-		let num2 = parseFloat(match[3]);
-		
-		operate(operator, num1, num2);
- 	}
-}
-
-function operate(operator, num1, num2) {
-	let answer;
-
-	switch (operator) {
-		case "+":
-			answer = add(num1, num2);
-			break;
-		case "-":
-			answer = subtract(num1, num2);
-			break;
-		case "*":
-			answer = multiply(num1, num2);
-			break;
-		case "/":
-			answer = divide(num1, num2);
-			break;
-		case "√":
-			answer = sqrt(num1);
-			break;
-	}
-
-	if (answer.toString().length > 20) {
-		inputValue = [answer.toExponential()];
-		answerBtn.value = answer.toExponential();
-	}
-	else {
-		inputValue = [answer];
-		answerBtn.value = answer;
-	}
-   
-	output(inputValue);
+function calculate(inputString) {
+  let sqrtEquationReg = /(\d*\.?\d+)\s{1}\√{1}/;
+  
+  if (sqrtEquationReg.test(inputString) === true) {
+    let match = sqrtEquationReg.exec(inputString);
+    let num1 = parseFloat(match[1]);
+    inputString = sqrt(num1);
+    answer(inputString);
+  }
+	// if there are no operators (with spaces after them) left then return the answer
+  if (/[+\/*-]{1}\s/.test(inputString) === false) {
+  	answer(inputString);
+  }
+  //otherwise keep solvin equations
+  else {
+  	let regMD = /[\/\*]+/g;
+  	let regAS = /[+-]+/g; 
+  	let outputRegMD = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
+  	let outputRegAS = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
+    //if there is a multiplication or division equation do those first
+    if (/[\/\*]+/.test(inputString) === true) {
+        //assign the left and right sides of the equation and operator to variables;
+      let match = outputRegMD.exec(inputString);
+      let num1 = parseFloat(match[1]);
+      let operator = match[2];
+      let num2 = parseFloat(match[3]);
+      
+      if (operator === "/") {
+        // replace entire equation match with divide(num1, num2)
+        inputString = inputString.replace(outputRegMD, divide(num1, num2));
+        calculate(inputString);
+      }
+      else {
+      //replace entire equation match with multiply(num1, num2)
+        inputString = inputString.replace(outputRegMD, multiply(num1, num2));
+        calculate(inputString);
+      }
+    }
+    //if there is a multiplication or division equation do that next
+    else if (/[+-]+/.test(inputString) === true) {
+        //assign the left and right sides of the equation and operator to variables;
+      let match = outputRegAS.exec(inputString);
+      let num1 = parseFloat(match[1]);
+      let operator = match[2];
+      let num2 = parseFloat(match[3]);
+  
+      if (operator === "+") {
+        //replace entire equation match with add(num1, num2)
+        inputString = inputString.replace(outputRegAS, add(num1, num2));
+        calculate(inputString);
+      }
+      else {
+         //replace entire equation match with subtract(num1, num2)
+        inputString = inputString.replace(outputRegAS, subtract(num1, num2));
+        calculate(inputString);
+      }
+    }
+  } 
 }
 
 function add(num1, num2) {
@@ -209,6 +233,21 @@ function divide(num1, num2) {
 
 function sqrt(num1) {
 	return Math.sqrt(num1);
+}
+
+function answer(inputString) {
+	let answer = inputString;
+
+    if (answer.toString().length > 20) {
+      inputValue = [answer.toExponential()];
+      answerBtn.value = answer.toExponential();
+    }
+    else {
+      inputValue = [answer];
+      answerBtn.value = answer;
+    }
+   
+    output(inputValue);
 }
 
 
