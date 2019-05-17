@@ -16,33 +16,35 @@ var calculator = (function () {
 
 	function keyFilter(event) {
 		if (/\d/.test(event.key)) {
-			input(event);
+			addNumber(event.key);
+		}
+		else if (event.key === ".") {
+			decimalFilter(event.key);
 		}
 		else if (/[√+/*-]/.test(event.key)) {
-			operatorFilter(event);
-		}
-		else if (event.key === "Backspace") {
-			backspace();
+			operatorFilter(event.key);
 		}
 		else if (event.key === "=" || event.key === "Enter") {
 			equalsFilter(event);	
-		}
-		else if (event.key === ".") {
-			decimalFilter(event);
+		}		
+		else if (event.key === "Backspace") {
+			backspace();
 		}
 	}
 
 	numbers.forEach((number) => {
-		number.addEventListener('click', input);
+		number.addEventListener('click', (event) => numberFilter(event.target.innerHTML));
 	});
 
-	decimal.addEventListener('click', decimalFilter);
+	decimal.addEventListener('click', (event) => decimalFilter((event.target.innerHTML)));
 
 	operators.forEach((operator) => {
-		operator.addEventListener('click', operatorFilter);
+		operator.addEventListener('click', (event) => operatorFilter((event.target.innerHTML)));
 	}); 
 
-	sqrtBtn.addEventListener('click', operatorFilter);
+	sqrtBtn.addEventListener('click', sqRtFilter);
+
+	answerBtn.addEventListener('click', (event) =>answerFilter(answerBtn.value));
 
 	equals.addEventListener('click', equalsFilter);
 
@@ -53,31 +55,48 @@ var calculator = (function () {
 
 	deleteBtn.addEventListener('click', backspace); 
 
-	answerBtn.addEventListener('click', answerFilter);
-
 	const lastNum = (string) => {
 		let outputArray = string.split(" ");
-		console.log('outputArray at lastNum:', outputArray);
 		return outputArray[outputArray.length -1];
 	}
 
-	const filterLastNum = (string, filterChar) => string.indexOf(filterChar) === -1;
+	const noDecimalLastNum = (string) => string.indexOf(".") === -1;
+
+	const noOperatorLastNum = (string) => string !== "";
+
+	const noAnswerBtnLastNum = (string) => string !== answerBtn.value;
+
+	function numberFilter(event) {
+		if(noAnswerBtnLastNum(lastNum(outputValue.innerHTML))) {
+			addNumber(event);
+		}
+	}
 
 	function decimalFilter(event) {
-		if  (filterLastNum(lastNum(outputValue.innerHTML), ".") || outputValue.innerHTML === answerBtn.value) {
-				input(event);
+		if  (noDecimalLastNum(lastNum(outputValue.innerHTML)) || outputValue.innerHTML === answerBtn.value) {
+				addValue(event);
 		}
 	}
 
 	function operatorFilter(event) {
-		let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
-		// if there is a number in the output html and the last input was not an operator allow an operator in the output
-		if (/\d/.test(outputValue.innerHTML) && lastNum(outputValue.innerHTML) !== "") {
-			input(event);
+		if (noOperatorLastNum(lastNum(outputValue.innerHTML))) {
+			addOperator(event);
 		}
+
+	}
+
+	function sqRtFilter() {
+		let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
+
 		if (sqrtEquationReg.test(outputValue.innerHTML)) {
 			let inputString = outputValue.innerHTML;
 			calculate(inputString);
+		}
+	}
+
+	function answerFilter(event) {
+		if (lastNum(outputValue.innerHTML).length === 0) {
+			addValue(event)
 		}
 	}
 
@@ -89,53 +108,60 @@ var calculator = (function () {
 		}
 	}
 
-	function answerFilter(event) {
-		// check if there is already a number at all or after an operator, if not input answer
-		if (lastNum(outputValue.innerHTML).length === 0) {
-			input(event)
-		}
-	}
-
 	function backspace(event) {
 		inputValue.pop();
 		output(inputValue);
 	}
 
-	function input(event) {
-		let eventInput;
-
-		if (event.type === "keydown") {
-			eventInput = event.key;	
-		} 
-		else if (event.type === "click" && event.target.innerHTML === "Ans") {
-			eventInput = answerBtn.value;	
-		} 
-		else {
-			eventInput = event.target.innerHTML;
+	function addNumber(number) {
+		if (outputValue.innerHTML === answerBtn.value) {
+			inputValue = [number];	
 		}
-
-		pushOrClear(eventInput);
-
-		function pushOrClear(eventInput) {
-			if (/[√+/*-]/.test(eventInput) && inputValue.length >= 1) {
-					eventInput = " " + eventInput + " ";
-					inputValue.push(eventInput);	
-			}			
-			else {
-				if (inputValue.length >= 1 && outputValue.innerHTML !== answerBtn.value) {
-					inputValue.push(eventInput);	
-				} 
-				else if (/\d|\./.test(eventInput)) {
-					inputValue = [eventInput];
-				}
-			}
-		}   
-
+		inputValue.push(number);
 		output(inputValue);		
+	}
+
+	function addValue(value) {
+		inputValue.push(value);
+		output(inputValue);	
+	}
+
+	function addOperator(operator) {
+		let operatorString = " " + operator + " ";
+		inputValue.push(operatorString);
+		output(inputValue);
 	}
 
 	function output(inputValue) {
 		outputValue.innerHTML = inputValue.join("");
+	}
+	function add(num1, num2) {
+		return num1 + num2;
+	}
+
+	function subtract(num1, num2) {
+		return num1 - num2;
+	}
+
+	function multiply(num1, num2) {
+		product = num1 * num2;
+		return parseFloat(product.toFixed(decimalPlaces(num1)+decimalPlaces(num2)));
+	}
+
+	function decimalPlaces(num) {
+	    var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+	    return Math.max(
+	        0,
+	        (match[1] ? match[1].length : 0)
+	        - (match[2] ? +match[2] : 0));
+	}
+
+	function divide(num1, num2) {
+		return num1 / num2;
+	}
+
+	function sqrt(num1) {
+		return Math.sqrt(num1);
 	}
 
 	function calculate(inputString) {
@@ -196,35 +222,6 @@ var calculator = (function () {
 	      		}
 	    	}
 	  	} 
-	}
-
-	function add(num1, num2) {
-		return num1 + num2;
-	}
-
-	function subtract(num1, num2) {
-		return num1 - num2;
-	}
-
-	function multiply(num1, num2) {
-		product = num1 * num2;
-		return parseFloat(product.toFixed(decimalPlaces(num1)+decimalPlaces(num2)));
-	}
-
-	function decimalPlaces(num) {
-	    var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-	    return Math.max(
-	        0,
-	        (match[1] ? match[1].length : 0)
-	        - (match[2] ? +match[2] : 0));
-	}
-
-	function divide(num1, num2) {
-		return num1 / num2;
-	}
-
-	function sqrt(num1) {
-		return Math.sqrt(num1);
 	}
 
 	const eNotation = (string) => Number.parseFloat(string).toExponential(5);
