@@ -8,46 +8,35 @@
 	</head>
 
 	<body>
-		<section id="calculator-body">
-			<section id="logo">
-				<h2>BV-100S</h2>
-			</section>	
-
-			<section id="output"></section>
-
-			<section  id="top-buttons">
-				<button class="top-btn clear" id="allClear">AC</button>
+		<div id="calculator">
+			<div id="display"></div>
+			<div  id="mainButtons">
+				<button class="top-btn" id="answer" value="0">Ans</button>
 				<button class="top-btn clear" id="delete">Del</button>
-				<button class="top-btn" id="ans" value="0">Ans</button>
-				<button class="top-btn op-btn" id="sqrt">√</button>
-			</section>
-
-			<section id="numbers">
-				<button class="num-btn">9</button>
-				<button class="num-btn">8</button>
-				<button class="num-btn">7</button>
-				<button class="num-btn">6</button>
-				<button class="num-btn">5</button>
-				<button class="num-btn">4</button>
-				<button class="num-btn">3</button>
-				<button class="num-btn">2</button>
-				<button class="num-btn">1</button>
-				<section id="bottom-row">
-					<button class="num-btn">0</button>
-					<button  id="dec-btn">.</button>
-					<button  id="equal-btn">=</button>
-				</section>
-			</section>
-
-
-			<section id="operators">
-				<button class="op-btn">*</button>
-				<button class="op-btn">/</button>
-				<button class="op-btn">+</button>
-				<button class="op-btn">-</button>
-			</section>
-
-		</section>
+				<button class="top-btn clear" id="allClear">AC</button>
+				<button class="num-btn" id="nine">9</button>
+				<button class="num-btn" id="eight">8</button>
+				<button class="num-btn" id="seven">7</button>
+				<button class="num-btn" id="six">6</button>
+				<button class="num-btn" id="five">5</button>
+				<button class="num-btn" id="four">4</button>
+				<button class="num-btn" id="three">3</button>
+				<button class="num-btn" id="two">2</button>
+				<button class="num-btn" id="one">1</button>
+				<div id="bottomButtons">
+					<button class="num-btn" id="zero">0</button>
+					<button  class="dec-btn" id="decimal">.</button>
+					<button  class="equal-btn" id="equals">=</button>
+				</div>
+			</div>
+			<div id="operatorButtons">
+				<button class="op-btn" id="sqRt">√</button>
+				<button class="op-btn" id="multiply">*</button>
+				<button class="op-btn" id="divide">/</button>
+				<button class="op-btn" id="add">+</button>
+				<button class="op-btn" id="subtract">-</button>
+			</div>
+		</div>
 
 		<script src="calculator.js"></script>
 	<body>
