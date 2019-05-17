@@ -13,30 +13,24 @@ button {
 	background-color: #FFF;
 }
 
-section#calculator-body {
-	background-color: #536878;
-	width: 400px;
-	height: 525px;
-	display: flex;
-	flex-flow: row wrap;
-	border-radius: 15px;
-	margin: 0 auto;
-	margin-top: 4em;
+div#calculator {
+    background-color: #536878;
+    width: 338px;
+    height: 480px;
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 0 auto;
+    margin-top: 4em;
 }
 
-section#logo h2 {
-	color: #FFF;
-	font-size: 1.2em;
-	margin: 1em auto 0 1em;
-}
-
-section#output {
+div#display {
   font-size: 2em;
   color: #FFF;
   height: 1.5em;
-  width: 80%;
-  margin: 0 auto;
-  margin-bottom: .02em;
+  width: 97%;
+  margin: .75em auto .5em auto;
   padding-top: 1em;
   background-color: #36454f;
   border-radius: 2px;
@@ -44,38 +38,31 @@ section#output {
   white-space: nowrap;
 }
 
-section#top-buttons {
-  width: 82%;
-  margin: 0 auto;
-  margin-top: 0.5em;
+div#mainButtons {
+    display: inline-flex;
+    flex-flow: row-reverse wrap;
+    width: 70%;
+    align-content: flex-start;
+    margin: 0;
 }
 
-section#numbers {
-	display: flex;
-	flex-flow: row-reverse wrap;
-	width: 60%;
-	align-content: center;
-	margin: 0 0 1.25em 2em;
-}
-
-section#bottom-row {
+div#bottomButtons {
   	width: 100%;
   	margin: 0;
+  	margin-bottom: .5em;
   	display: flex;
   	align-content: center;
-  	margin: 0 0 .25em 1.75em;
 }
 
-section#operators {
-	display: flex;
-	flex-flow: column;
-	margin: 0;
-	margin-left: 0.65em;
-	margin-right: 2em;
- 	align-content: flex-start;
+div#operatorButtons {
+    display: flex;
+    flex-flow: column;
+    margin: 0 0 .5em 0.09em;
+    align-content: flex-start;
 }
-button#dec-btn,
-button#equal-btn,
+
+button#decimal,
+button#equals,
 button.num-btn,
 button.top-btn,
 button.op-btn {
@@ -91,7 +78,3 @@ button.clear {
 button.op-btn {
 	background-color: #c7c4c4;
 }
-
-
-
-
