@@ -57,6 +57,7 @@ var calculator = (function () {
 
 	const lastNum = (string) => {
 		let outputArray = string.split(" ");
+		console.log('outputArray at lastNum:', outputArray);
 		return outputArray[outputArray.length -1];
 	}
 
@@ -71,8 +72,7 @@ var calculator = (function () {
 	function operatorFilter(event) {
 		let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
 		// if there is a number in the output html and the last input was not an operator allow an operator in the output
-	
-		if (/\d/.test(outputValue.innerHTML) && outputValue.innerHTML[outputValue.innerHTML.length - 1] !== " ") {
+		if (/\d/.test(outputValue.innerHTML) && lastNum(outputValue.innerHTML) !== "") {
 			input(event);
 		}
 		if (sqrtEquationReg.test(outputValue.innerHTML)) {
