@@ -90,14 +90,9 @@ var calculator = (function () {
 	}
 
 	function answerFilter(event) {
-		// check if there is an operator present and make sure there is not already a number after the operator
-		if (outputValue.innerHTML.length === 0) {
+		// check if there is already a number at all or after an operator, if not input answer
+		if (lastNum(outputValue.innerHTML).length === 0) {
 			input(event)
-		}
-		else {
-			if (lastNum(outputValue.innerHTML).length === 0) {
-				input(event);
-			}
 		}
 	}
 
@@ -130,7 +125,7 @@ var calculator = (function () {
 				if (inputValue.length >= 1 && outputValue.innerHTML !== answerBtn.value) {
 					inputValue.push(eventInput);	
 				} 
-				else if (/\d|\./.test(eventInput) === true) {
+				else if (/\d|\./.test(eventInput)) {
 					inputValue = [eventInput];
 				}
 			}
