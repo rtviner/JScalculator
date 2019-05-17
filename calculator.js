@@ -235,22 +235,10 @@ var calculator = (function () {
 	const eNotation = (string) => Number.parseFloat(string).toExponential(5);
 
 	function answer(inputString) {
-		let answer = inputString;
-		console.log("inputString:", inputString);
-		console.log("inputValue:", inputValue);
+	    const answer = (inputString.length > 20) ? eNotation(inputString) : inputString;
 
-		console.log("is answer too long:", inputString.length > 20);
-		console.log(inputString.length);
-
-	    if (inputString.length > 20) {
-	    	inputValue = [eNotation(answer)];
-	    	answerBtn.value = eNotation(answer);
-	    }
-	    else {
-	    	inputValue = [answer];
-	    	answerBtn.value = answer;
-	    }
-	   
+	    inputValue = [answer];
+	    answerBtn.value = answer;   
 	    output(inputValue);
 	}
 }());
