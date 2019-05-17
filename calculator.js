@@ -1,12 +1,12 @@
 var calculator = (function () {
 
 	let numbers = document.querySelectorAll('.num-btn');
-	let decimal = document.getElementById('dec-btn')
+	let decimal = document.getElementById('decimal')
 	let operators = document.querySelectorAll('.op-btn');
-	let sqrtBtn = document.getElementById('sqrt');
-	let outputValue = document.getElementById('output');
-	let equals = document.getElementById('equal-btn');
-	let answerBtn = document.getElementById('ans');
+	let sqrtBtn = document.getElementById('sqRt');
+	let outputValue = document.getElementById('display');
+	let equals = document.getElementById('equals');
+	let answerBtn = document.getElementById('answer');
 	let allClearBtn = document.getElementById('allClear');
 	let deleteBtn = document.getElementById('delete');
 
@@ -44,7 +44,7 @@ var calculator = (function () {
 
 	sqrtBtn.addEventListener('click', sqRtFilter);
 
-	answerBtn.addEventListener('click', (event) =>answerFilter(answerBtn.value));
+	answerBtn.addEventListener('click', (event) => answerFilter(answerBtn.value));
 
 	equals.addEventListener('click', equalsFilter);
 
