@@ -65,7 +65,8 @@ button#decimal,
 button#equals,
 button.num-btn,
 button.top-btn,
-button.op-btn {
+button.op-btn,
+button#sqRt {
 	padding: .25em;
 	margin: .1em;
 	width: 2.25em;
@@ -75,6 +76,6 @@ button.clear {
 	background-color: #965050;
 }
 
-button.op-btn {
+button.op-btn, button#sqRt {
 	background-color: #c7c4c4;
 }
