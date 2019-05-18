@@ -10,13 +10,13 @@ var calculator = (function () {
 	let allClearBtn = document.getElementById('allClear');
 	let deleteBtn = document.getElementById('delete');
 
-	let inputValue = [];
+	const defaultInput = [];
 
 	window.addEventListener('keydown', keyFilter) 
 
 	function keyFilter(event) {
 		if (/\d/.test(event.key)) {
-			addNumber(event.key);
+			numberFilter(event.key);
 		}
 		else if (event.key === ".") {
 			decimalFilter(event.key);
@@ -33,7 +33,10 @@ var calculator = (function () {
 	}
 
 	numbers.forEach((number) => {
-		number.addEventListener('click', (event) => numberFilter(event.target.innerHTML));
+		number.addEventListener('click', (event) => {
+			console.log("a number has been clicked");
+			numberFilter(event.target.innerHTML);	
+		})
 	});
 
 	decimal.addEventListener('click', (event) => decimalFilter((event.target.innerHTML)));
@@ -49,8 +52,8 @@ var calculator = (function () {
 	equals.addEventListener('click', equalsFilter);
 
 	allClearBtn.addEventListener('click', function(event) {
-		inputValue = [];
-		outputValue.innerHTML = "";
+		newInputValue = defaultInput;
+		output(newInputValue);
 	});
 
 	deleteBtn.addEventListener('click', backspace); 
@@ -67,7 +70,7 @@ var calculator = (function () {
 	const noAnswerBtnLastNum = (string) => string !== answerBtn.value;
 
 	function numberFilter(event) {
-		if(noAnswerBtnLastNum(lastNum(outputValue.innerHTML))) {
+		if(outputValue.innerHTML === answerBtn.value || noAnswerBtnLastNum(lastNum(outputValue.innerHTML))) {
 			addNumber(event);
 		}
 	}
@@ -89,6 +92,7 @@ var calculator = (function () {
 		//check if there is an operator in output HTML, if so call calculateSqRt(equalsFilter(outputValue.innerHTML))
 		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
 			console.log("its going through if:", inputValue);
+			// this isnt working because equals calls calculate which already calls an
 			calculateSqRt(equalsFilter(outputValue.innerHTML));
 		}
 		calculateSqRt(outputValue.innerHTML);
@@ -114,11 +118,16 @@ var calculator = (function () {
 		output(inputValue);
 	}
 
+
+
 	function addNumber(number) {
-		if (outputValue.innerHTML === answerBtn.value) {
-			inputValue = [number];	
+		inputValue = (outputValue.innerHTML === answerBtn.value) {
+			inputValue = [inputValue, number];	
 		}
-		inputValue.push(number);
+		else {
+			console.log("the else within addNumber");
+			inputValue.push(number);
+		}
 		output(inputValue);		
 	}
 
@@ -227,12 +236,12 @@ var calculator = (function () {
 	const eNotation = (string) => Number.parseFloat(string).toExponential(5);
 
 	function answer(inputString) {
+		console.log(inputString);
 	    const answer = (inputString.length > 20) ? eNotation(inputString) : inputString;
 
 	    inputValue = [answer];
 	    answerBtn.value = answer;   
 	    output(inputValue);
-	    console.log("Answer:", answer);
 	}
 }());
 
