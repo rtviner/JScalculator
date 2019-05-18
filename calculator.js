@@ -42,7 +42,7 @@ var calculator = (function () {
 		operator.addEventListener('click', (event) => operatorFilter((event.target.innerHTML)));
 	}); 
 
-	sqrtBtn.addEventListener('click', sqRtFilter);
+	sqrtBtn.addEventListener('click', (event) => sqRtFilter(event));
 
 	answerBtn.addEventListener('click', (event) => answerFilter(answerBtn.value));
 
@@ -85,13 +85,13 @@ var calculator = (function () {
 
 	}
 
-	function sqRtFilter() {
-		let sqrtEquationReg = /\d*\.?\d+\s{1}\√+/;
-
-		if (sqrtEquationReg.test(outputValue.innerHTML)) {
-			let inputString = outputValue.innerHTML;
-			calculate(inputString);
+	function sqRtFilter(event) {
+		//check if there is an operator in output HTML, if so call calculateSqRt(equalsFilter(outputValue.innerHTML))
+		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
+			console.log("its going through if:", inputValue);
+			calculateSqRt(equalsFilter(outputValue.innerHTML));
 		}
+		calculateSqRt(outputValue.innerHTML);
 	}
 
 	function answerFilter(event) {
@@ -101,6 +101,7 @@ var calculator = (function () {
 	}
 
 	function equalsFilter(event) {
+		console.log("equals Filter has been called with:", event)
 		// if there is an operator with 0 or 1 decimals and 1 or more digits call the calculate formula
 		if (/[+/*-]{1}\s\d*\.?\d+/g.test(outputValue.innerHTML)) {
 			let inputString = outputValue.innerHTML;
@@ -135,6 +136,7 @@ var calculator = (function () {
 	function output(inputValue) {
 		outputValue.innerHTML = inputValue.join("");
 	}
+
 	function add(num1, num2) {
 		return num1 + num2;
 	}
@@ -164,15 +166,13 @@ var calculator = (function () {
 		return Math.sqrt(num1);
 	}
 
+	function calculateSqRt(number) {
+		console.log("calculateSqRt has been called with:", number);
+	    	answer(sqrt(number));
+	}
+
 	function calculate(inputString) {
-		let sqrtEquationReg = /(\d*\.?\d+)\s{1}\√{1}/;
-	  
-		if (sqrtEquationReg.test(inputString) === true) {
-	    	let match = sqrtEquationReg.exec(inputString);
-	    	let num1 = parseFloat(match[1]);
-	    	inputString = sqrt(num1);
-	    	answer(inputString);
-	  	}
+		console.log("calculate has been called:", inputString);
 		// if there are no operators (with spaces after them) left then return the answer
 		if (/[+\/*-]{1}\s/.test(inputString) === false) {
 	  		answer(inputString);
@@ -232,6 +232,7 @@ var calculator = (function () {
 	    inputValue = [answer];
 	    answerBtn.value = answer;   
 	    output(inputValue);
+	    console.log("Answer:", answer);
 	}
 }());
 
