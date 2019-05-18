@@ -34,7 +34,6 @@ var calculator = (function () {
 
 	numbers.forEach((number) => {
 		number.addEventListener('click', (event) => {
-			console.log("a number has been clicked");
 			numberFilter(event.target.innerHTML);	
 		})
 	});
@@ -114,20 +113,13 @@ var calculator = (function () {
 	}
 
 	function backspace(event) {
-		inputValue.pop();
-		output(inputValue);
-	}
-
-
+		//will this work with operators?
+		const backspaceInput = [...outputValue.innerHTML].slice(0, [...outputValue.innerHTML].length - 1);
+		output(backspaceInput);
+	};
 
 	function addNumber(number) {
-		inputValue = (outputValue.innerHTML === answerBtn.value) {
-			inputValue = [inputValue, number];	
-		}
-		else {
-			console.log("the else within addNumber");
-			inputValue.push(number);
-		}
+		let inputValue = (outputValue.innerHTML === answerBtn.value) ? [number] : [...outputValue.innerHTML, number]
 		output(inputValue);		
 	}
 
