@@ -59,6 +59,7 @@ var calculator = (function () {
 
 	const lastNum = (string) => {
 		let outputArray = string.split(" ");
+		console.log("lastNum at lastNum:", [outputArray[outputArray.length -1]]);
 		return outputArray[outputArray.length -1];
 	}
 
@@ -70,18 +71,18 @@ var calculator = (function () {
 
 	function numberFilter(event) {
 		if(outputValue.innerHTML === answerBtn.value || noAnswerBtnLastNum(lastNum(outputValue.innerHTML))) {
-			addNumber(event);
+			addValue(event);
 		}
 	}
 
 	function decimalFilter(event) {
-		if  (noDecimalLastNum(lastNum(outputValue.innerHTML)) || outputValue.innerHTML === answerBtn.value) {
+		if  (outputValue.innerHTML === answerBtn.value ||noDecimalLastNum(lastNum(outputValue.innerHTML))) {
 				addValue(event);
 		}
 	}
 
 	function operatorFilter(event) {
-		if (noOperatorLastNum(lastNum(outputValue.innerHTML))) {
+		if (noOperatorLastNum(lastNum(outputValue.innerHTML)) && lastNum(outputValue.innerHTML) !== ".") {
 			addOperator(event);
 		}
 
@@ -90,7 +91,7 @@ var calculator = (function () {
 	function sqRtFilter(event) {
 		//check if there is an operator in output HTML, if so call calculateSqRt(equalsFilter(outputValue.innerHTML))
 		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
-			console.log("its going through if:", inputValue);
+			console.log("its going through if:", outputValue.innerHTML);
 			// this isnt working because equals calls calculate which already calls an
 			calculateSqRt(equalsFilter(outputValue.innerHTML));
 		}
@@ -113,24 +114,21 @@ var calculator = (function () {
 	}
 
 	function backspace(event) {
-		//will this work with operators?
-		const backspaceInput = [...outputValue.innerHTML].slice(0, [...outputValue.innerHTML].length - 1);
+		const outputArray = [...outputValue.innerHTML];
+		const backspaceInput = (noOperatorLastNum(lastNum(outputValue.innerHTML))) ? 
+			outputArray.slice(0, outputArray.length - 1) :
+			outputArray.slice(0, outputArray.length - 3)	
 		output(backspaceInput);
 	};
 
-	function addNumber(number) {
-		let inputValue = (outputValue.innerHTML === answerBtn.value) ? [number] : [...outputValue.innerHTML, number]
+	function addValue(number) {
+		const inputValue = (outputValue.innerHTML === answerBtn.value) ? [number] : [...outputValue.innerHTML, number]
 		output(inputValue);		
-	}
-
-	function addValue(value) {
-		inputValue.push(value);
-		output(inputValue);	
 	}
 
 	function addOperator(operator) {
 		let operatorString = " " + operator + " ";
-		inputValue.push(operatorString);
+		const inputValue = [...outputValue.innerHTML, operatorString];
 		output(inputValue);
 	}
 
@@ -228,7 +226,6 @@ var calculator = (function () {
 	const eNotation = (string) => Number.parseFloat(string).toExponential(5);
 
 	function answer(inputString) {
-		console.log(inputString);
 	    const answer = (inputString.length > 20) ? eNotation(inputString) : inputString;
 
 	    inputValue = [answer];
