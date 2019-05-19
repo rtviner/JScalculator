@@ -59,7 +59,6 @@ var calculator = (function () {
 
 	const lastNum = (string) => {
 		let outputArray = string.split(" ");
-		console.log("lastNum at lastNum:", [outputArray[outputArray.length -1]]);
 		return outputArray[outputArray.length -1];
 	}
 
@@ -166,53 +165,37 @@ var calculator = (function () {
 	    	answer(sqrt(number));
 	}
 
-	function makeMultiplyOrDivideEquation(equationString) {
-		const multiplyOrDivideEquation = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
+	const calculations = {
+		"/": (num1, num2) => divide(num1, num2),
+		"*": (num1, num2) => multiply(num1, num2),
+		"+": (num1, num2) => add(num1, num2),
+		"-": (num1, num2) => subtract(num1, num2)
+	};
 
-	  	const match = multiplyOrDivideEquation.exec(equationString);
-	    const num1 = parseFloat(match[1]);
+	function makeEquation(expression, equationString) {
+		const match = expression.exec(equationString);
+		const num1 = parseFloat(match[1]);
 	    const operator = match[2];
 	    const num2 = parseFloat(match[3]);
-	    //replace entire equation match with result of divide(num1, num2) or multiply(num1, num2) and call reduceByOrderOfOperations again
-	    const reducedEquationString = (operator === "/") ? 
-	    	equationString.replace(multiplyOrDivideEquation, divide(num1, num2)) :
-	    	equationString.replace(multiplyOrDivideEquation, multiply(num1, num2));
-
-	    reduceByOrderOfOperations(reducedEquationString);
-	}
-
-	function makeAddOrSubtractEquation(equationString) {
-		const addOrSubtractEquation = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
-
-		let match = addOrSubtractEquation.exec(equationString);
-	    let num1 = parseFloat(match[1]);
-	    let operator = match[2];
-	    let num2 = parseFloat(match[3]);
-	    //replace entire equation match with result of add(num1, num2) or subtract(num1, num2) and call reduceByOrderOfOperations again
-	    const reducedEquationString = (operator === "+") ?
-	    	equationString.replace(addOrSubtractEquation, add(num1, num2)) :
-	    	equationString.replace(addOrSubtractEquation, subtract(num1, num2));
-
+	
+	    let reducedEquationString = equationString.replace(expression, calculations[operator](num1, num2));
 	    reduceByOrderOfOperations(reducedEquationString);
 	}
 
 	function reduceByOrderOfOperations(equationString) {
-		// if there are no operators (with spaces after them) left then return the answer
-		console.log("reduceByOrderOfOperations has been called with:", equationString)
-	
+		// if there are no operators (with spaces after them) left then return the answer because there are no more equations to solve	
 		if (!/[+\/*-]{1}\s/.test(equationString)) {
-	  		answer(equationString);
+	  		return answer(equationString);
 	  	}
 	  	//otherwise keep making and solving equations
-	  	if (/[*/]\s/.test(equationString)) {
-	  		console.log("calling makeMultiplyOrDivideEquation");
-	  		makeMultiplyOrDivideEquation(equationString);
-	  	}
-		else if (/[+-]\s/.test(equationString)) {
-			console.log("calling makeAddOrSubtractEquation");
-	  		makeAddOrSubtractEquation(equationString);
-	  	}
- 
+	  	const multiplicationOrDivision = /(\-*\d*\.?\d+)\s{1}([*/]+)\s{1}(\-*\d*\.?\d+)/;
+	  	const additionOrSubtraction = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
+
+	  	const expression = (/[*/]\s/.test(equationString)) ? 
+	  		multiplicationOrDivision :
+	  		additionOrSubtraction;
+
+	  	return makeEquation(expression, equationString);
 	}
 
 	const eNotation = (numberString) => Number.parseFloat(numberString).toExponential(5);
