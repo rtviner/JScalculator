@@ -13,13 +13,15 @@ var calculator = (function () {
 	window.addEventListener('keydown', (event) => keyFilter(event)); 
 
 	function keyFilter(event) {
+		console.log("keypress key:", event.key);
+
 		if (/\d/.test(event.key)) {
 			numberFilter(event.key);
 		}
 		else if (event.key === ".") {
 			decimalFilter(event.key);
 		}
-		else if (/[√+/*-]/.test(event.key)) {
+		else if (/[+/*-]/.test(event.key)) {
 			operatorFilter(event.key);
 		}
 		else if (event.key === "=" || event.key === "Enter") {
@@ -87,11 +89,9 @@ var calculator = (function () {
 	}
 
 	function sqRtFilter(event) {
-		//check if there is an operator in output HTML, if so call calculateSqRt(equalsFilter(outputValue.innerHTML))
+		//check if there is an operator in output HTML, if so qualsFilter(outputValue.innerHTML)
 		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
-			console.log("its going through sqRtfilter if:", outputValue.innerHTML);
-			// this isnt working because equals calls calculate which already calls an
-			calculateSqRt(equalsFilter(outputValue.innerHTML));
+			equalsFilter(outputValue.innerHTML);
 		}
 		calculateSqRt(outputValue.innerHTML);
 	}
@@ -131,9 +131,7 @@ var calculator = (function () {
 	}
 
 	function output(inputValue) {
-		const output = inputValue.join("");
 		outputValue.innerHTML = inputValue.join("");
-		return output;
 	}
 
 	function add(num1, num2) {
@@ -201,7 +199,7 @@ var calculator = (function () {
 	        		calculate(inputString);
 	      		}
 	    	}
-	    //if there is a multiplication or division equation do that next
+	    //if there is a addition or subtraction equation do that next
 	    	else if (/[+-]+/.test(inputString) === true) {
 	        //assign the left and right sides of the equation and operator to variables;
 	      		let match = outputRegAS.exec(inputString);
@@ -226,6 +224,7 @@ var calculator = (function () {
 	const eNotation = (string) => Number.parseFloat(string).toExponential(5);
 
 	function answer(inputString) {
+		console.log("answer has been called with:", inputString);
 	    const answer = (inputString.length > 20) ? eNotation(inputString) : inputString;
 
 	    inputValue = [answer];
