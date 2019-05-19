@@ -63,33 +63,33 @@ var calculator = (function () {
 		return outputArray[outputArray.length -1];
 	}
 
-	const noDecimalLastNum = (string) => string.indexOf(".") === -1;
+	const noDecimal= (string) => string.indexOf(".") === -1;
 
-	const noOperatorLastNum = (string) => string !== "";
+	const noOperator = (string) => string !== "";
 
-	const noAnswerBtnLastNum = (string) => string !== answerBtn.value;
+	const noAnswerBtn = (string) => string !== answerBtn.value;
 
 	function numberFilter(event) {
-		if(outputValue.innerHTML === answerBtn.value || noAnswerBtnLastNum(lastNum(outputValue.innerHTML))) {
+		if(outputValue.innerHTML === answerBtn.value || noAnswerBtn(lastNum(outputValue.innerHTML))) {
 			addValue(event);
 		}
 	}
 
 	function decimalFilter(event) {
-		if  (outputValue.innerHTML === answerBtn.value ||noDecimalLastNum(lastNum(outputValue.innerHTML))) {
+		if  (outputValue.innerHTML === answerBtn.value ||noDecimal(lastNum(outputValue.innerHTML))) {
 				addValue(event);
 		}
 	}
 
 	function operatorFilter(event) {
-		if (noOperatorLastNum(lastNum(outputValue.innerHTML)) && lastNum(outputValue.innerHTML) !== ".") {
+		if (noOperator(lastNum(outputValue.innerHTML)) && lastNum(outputValue.innerHTML) !== ".") {
 			addOperator(event);
 		}
 
 	}
 
 	function sqRtFilter(event) {
-		//check if there is an operator in output HTML, if so qualsFilter(outputValue.innerHTML)
+		//check if last number and outputValue are the same indicating output is just one number rather than an equation, if equation call equalsFilter to solve
 		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
 			equalsFilter(outputValue.innerHTML);
 		}
@@ -113,7 +113,7 @@ var calculator = (function () {
 
 	function backspace(event) {
 		const outputArray = [...outputValue.innerHTML];
-		const backspaceInput = (noOperatorLastNum(lastNum(outputValue.innerHTML))) ? 
+		const backspaceInput = (noOperator(lastNum(outputValue.innerHTML))) ? 
 			outputArray.slice(0, outputArray.length - 1) :
 			outputArray.slice(0, outputArray.length - 3)	
 		output(backspaceInput);
