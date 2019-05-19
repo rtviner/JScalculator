@@ -10,9 +10,7 @@ var calculator = (function () {
 	let allClearBtn = document.getElementById('allClear');
 	let deleteBtn = document.getElementById('delete');
 
-	const defaultInput = [];
-
-	window.addEventListener('keydown', keyFilter) 
+	window.addEventListener('keydown', (event) => keyFilter(event)); 
 
 	function keyFilter(event) {
 		if (/\d/.test(event.key)) {
@@ -51,7 +49,7 @@ var calculator = (function () {
 	equals.addEventListener('click', equalsFilter);
 
 	allClearBtn.addEventListener('click', function(event) {
-		newInputValue = defaultInput;
+		newInputValue = [];
 		output(newInputValue);
 	});
 
@@ -91,7 +89,7 @@ var calculator = (function () {
 	function sqRtFilter(event) {
 		//check if there is an operator in output HTML, if so call calculateSqRt(equalsFilter(outputValue.innerHTML))
 		if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
-			console.log("its going through if:", outputValue.innerHTML);
+			console.log("its going through sqRtfilter if:", outputValue.innerHTML);
 			// this isnt working because equals calls calculate which already calls an
 			calculateSqRt(equalsFilter(outputValue.innerHTML));
 		}
@@ -133,7 +131,9 @@ var calculator = (function () {
 	}
 
 	function output(inputValue) {
+		const output = inputValue.join("");
 		outputValue.innerHTML = inputValue.join("");
+		return output;
 	}
 
 	function add(num1, num2) {
