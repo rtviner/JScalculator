@@ -63,9 +63,9 @@ div#operatorButtons {
 
 button#decimal,
 button#equals,
-button.num-btn,
-button.top-btn,
-button.op-btn,
+button.num,
+button.top,
+button.op,
 button#sqRt {
 	padding: .25em;
 	margin: .1em;
@@ -76,6 +76,6 @@ button.clear {
 	background-color: #965050;
 }
 
-button.op-btn, button#sqRt {
+button.op, button#sqRt {
 	background-color: #c7c4c4;
 }

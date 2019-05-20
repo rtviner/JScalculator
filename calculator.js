@@ -3,93 +3,24 @@ const additionOrSubtraction = /(\-*\d*\.?\d+)\s{1}([+-]+)\s{1}(\-*\d*\.?\d+)/;
 
 var calculator = (function () {
 
-    let numbers = document.querySelectorAll('.num-btn');
-    let decimal = document.getElementById('decimal')
-    let operators = document.querySelectorAll('.op-btn');
-    let sqrtBtn = document.getElementById('sqRt');
-    let outputValue = document.getElementById('display');
-    let equals = document.getElementById('equals');
-    let answerBtn = document.getElementById('answer');
-    let allClearBtn = document.getElementById('allClear');
-    let deleteBtn = document.getElementById('delete');
-
-    window.addEventListener('keydown', (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-        }
-            keyFilter(event);
-    }); 
-
-    function keyFilter(event) {
-        if (/\d/.test(event.key)) {
-            numberFilter(event.key);
-        }
-        else if (event.key === ".") {
-            decimalFilter(event.key);
-        }
-        else if (/[+/*-]/.test(event.key)) {
-            operatorFilter(event.key);
-        }
-        else if (event.key === "=" || event.key === "Enter") {
-            equalsFilter(event);
-        }		
-        else if (event.key === "Backspace") {
-            backspace();
-        }
-    }
-
-    numbers.forEach((number) => {
-        number.addEventListener('click', (event) => {
-            numberFilter(event.target.innerHTML);	
-        })
-    });
-
-    decimal.addEventListener('click', (event) => decimalFilter((event.target.innerHTML)));
-
-    operators.forEach((operator) => {
-        operator.addEventListener('click', (event) => operatorFilter((event.target.innerHTML)));
-    }); 
-
-    sqrtBtn.addEventListener('click', (event) => sqRtFilter(event));
-
-    answerBtn.addEventListener('click', (event) => answerFilter(answerBtn.value));
-
-    equals.addEventListener('click', equalsFilter);
-
-    allClearBtn.addEventListener('click', function(event) {
-        newInputValue = [];
-        output(newInputValue);
-    });
-
-    deleteBtn.addEventListener('click', backspace); 
+    const outputValue = document.getElementById('display');
+    const answerBtn = document.getElementById('answer');
 
     const lastNum = (string) => {
         let outputArray = string.split(" ");
         return outputArray[outputArray.length -1];
     }
 
-    function numberFilter(event) {
-            addValue(event);
-    }
-
-    function decimalFilter(event) {
-        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) || lastNum(outputValue.innerHTML).indexOf(".") === -1) {
-            addValue(event);
-        }
-    }
-
     function operatorFilter(event) {
         if (lastNum(outputValue.innerHTML).length > 0 && lastNum(outputValue.innerHTML) !== ".") {
-            addOperator(event);
+                addOperator(event);
         }
     }
 
     function sqRtFilter(event) {
-        //check if last number != outputValue indicating outputValue is at least 2 numbers and an operator, then call calculate to get answer for sqRt function
         if (lastNum(outputValue.innerHTML).length > 0) {
             reduceEquations(outputValue.innerHTML);
         }
-
         calculateSqRt(outputValue.innerHTML);
     }
 
@@ -104,6 +35,57 @@ var calculator = (function () {
             reduceEquations(outputValue.innerHTML);
         }
     }
+    
+    function numberFilter(event) {
+            addValue(event);
+    }
+
+    function decimalFilter(event) {
+        if (lastNum(outputValue.innerHTML).indexOf(".") === -1) {
+            addValue(event);
+        }
+    }
+
+    function filter(event) {
+        if (event === "AC") {
+            newInputValue = [];
+            output(newInputValue);
+        }
+        if (event === "Backspace" || event === "Del") {
+            backspace();
+        }
+        if (event === "Ans") {
+            answerFilter();
+        }
+        if (/\d/.test(event)) {
+            numberFilter(event);
+        }
+        if (event === ".") {
+            decimalFilter(event);
+        }
+        if (event === "=" || event === "Enter") {
+            equalsFilter(event);
+        }
+        if (event === "√") {
+            sqRtFilter();
+        }
+        if (/[+/*-]/.test(event)) {
+            operatorFilter(event);
+        }
+    }
+    
+    window.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+            filter(event.key);
+    });
+
+    const buttons = document.querySelectorAll('.btn');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', (event) => filter(event.target.innerHTML));
+    });
 
     function backspace(event) {
         const outputArray = [...outputValue.innerHTML];
