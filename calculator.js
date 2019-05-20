@@ -70,13 +70,11 @@ var calculator = (function () {
     const noAnswerBtn = (string) => string !== answerBtn.value;
 
     function numberFilter(event) {
-        if(outputValue.innerHTML === answerBtn.value || noAnswerBtn(lastNum(outputValue.innerHTML))) {
             addValue(event);
-        }
     }
 
     function decimalFilter(event) {
-        if (outputValue.innerHTML === answerBtn.value || noDecimal(lastNum(outputValue.innerHTML))) {
+        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("result")) || noDecimal(lastNum(outputValue.innerHTML))) {
             addValue(event);
         }
     }
@@ -103,8 +101,6 @@ var calculator = (function () {
     }
 
     function equalsFilter(event) {
-        //check if last number != outputValue indicating outputValue is at least 2 numbers and an operator, then call calculate to get answer
-        // todo: ensure there is a number, operator, number
         if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
             reduceEquations(outputValue.innerHTML);
         }
@@ -119,7 +115,10 @@ var calculator = (function () {
     };
 
     function addValue(number) {
-        const inputArray = (outputValue.innerHTML === answerBtn.value) ? [number] : [...outputValue.innerHTML, number]
+        const inputArray = (outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("result")) ? [number] : [...outputValue.innerHTML, number];
+        if (outputValue.classList.contains("result")) {
+            outputValue.classList.remove("result");
+        }
         output(inputArray);		
     }
 
@@ -200,7 +199,8 @@ var calculator = (function () {
     function answer (numberString) {
         const answer = (numberString.length > 20) ? eNotation(numberString) : numberString;
         finalAnswer = [answer];
-        answerBtn.value = finalAnswer;   
+        answerBtn.value = finalAnswer;
+        outputValue.classList.add("result");
         output(finalAnswer);
     }
 }());
