@@ -19,7 +19,7 @@ var calculator = (function () {
 
     function sqRtFilter(event) {
         if (lastNum(outputValue.innerHTML).length > 0) {
-            reduceEquations(outputValue.innerHTML);
+            reduceEquuations(outputValue.innerHTML);
         }
         calculateSqRt(outputValue.innerHTML);
     }
@@ -34,10 +34,6 @@ var calculator = (function () {
         if (lastNum(outputValue.innerHTML).length > 0 && lastNum(outputValue.innerHTML) !== ".") {
             reduceEquations(outputValue.innerHTML);
         }
-    }
-    
-    function numberFilter(event) {
-            addValue(event);
     }
 
     function decimalFilter(event) {
@@ -58,7 +54,7 @@ var calculator = (function () {
             answerFilter();
         }
         if (/\d/.test(event)) {
-            numberFilter(event);
+            addValue(event);
         }
         if (event === ".") {
             decimalFilter(event);
