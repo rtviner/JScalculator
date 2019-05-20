@@ -106,7 +106,7 @@ var calculator = (function () {
     }
 
     function equalsFilter(event) {
-        if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
+        if (lastNum(outputValue.innerHTML).length > 0) {
             reduceEquations(outputValue.innerHTML);
         }
     }
