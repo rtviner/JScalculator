@@ -125,6 +125,9 @@ var calculator = (function () {
     function addOperator(operator) {
         let operatorString = " " + operator + " ";
         const inputArray = [...outputValue.innerHTML, operatorString];
+        if (outputValue.classList.contains("answer")) {
+            outputValue.classList.remove("answer");
+        }
         output(inputArray);
     }
 
