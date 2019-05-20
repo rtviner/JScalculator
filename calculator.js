@@ -13,7 +13,12 @@ var calculator = (function () {
     let allClearBtn = document.getElementById('allClear');
     let deleteBtn = document.getElementById('delete');
 
-    window.addEventListener('keydown', (event) => keyFilter(event)); 
+    window.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+            keyFilter(event);
+    }); 
 
     function keyFilter(event) {
         if (/\d/.test(event.key)) {
