@@ -74,7 +74,7 @@ var calculator = (function () {
     }
 
     function decimalFilter(event) {
-        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("result")) || noDecimal(lastNum(outputValue.innerHTML))) {
+        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) || noDecimal(lastNum(outputValue.innerHTML))) {
             addValue(event);
         }
     }
@@ -115,9 +115,9 @@ var calculator = (function () {
     };
 
     function addValue(number) {
-        const inputArray = (outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("result")) ? [number] : [...outputValue.innerHTML, number];
-        if (outputValue.classList.contains("result")) {
-            outputValue.classList.remove("result");
+        const inputArray = (outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) ? [number] : [...outputValue.innerHTML, number];
+        if (outputValue.classList.contains("answer")) {
+            outputValue.classList.remove("answer");
         }
         output(inputArray);		
     }
@@ -200,7 +200,7 @@ var calculator = (function () {
         const answer = (numberString.length > 20) ? eNotation(numberString) : numberString;
         finalAnswer = [answer];
         answerBtn.value = finalAnswer;
-        outputValue.classList.add("result");
+        outputValue.classList.add("answer");
         output(finalAnswer);
     }
 }());
