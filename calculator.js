@@ -68,8 +68,6 @@ var calculator = (function () {
         return outputArray[outputArray.length -1];
     }
 
-    const noAnswerBtn = (string) => string !== answerBtn.value;
-
     function numberFilter(event) {
             addValue(event);
     }
@@ -88,7 +86,7 @@ var calculator = (function () {
 
     function sqRtFilter(event) {
         //check if last number != outputValue indicating outputValue is at least 2 numbers and an operator, then call calculate to get answer for sqRt function
-        if (lastNum(outputValue.innerHTML) !== outputValue.innerHTML) {
+        if (lastNum(outputValue.innerHTML).length > 0) {
             reduceEquations(outputValue.innerHTML);
         }
 
