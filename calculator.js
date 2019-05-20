@@ -68,10 +68,6 @@ var calculator = (function () {
         return outputArray[outputArray.length -1];
     }
 
-    const noDecimal = (string) => string.indexOf(".") === -1;
-
-    const noOperator = (string) => string !== "";
-
     const noAnswerBtn = (string) => string !== answerBtn.value;
 
     function numberFilter(event) {
@@ -79,13 +75,13 @@ var calculator = (function () {
     }
 
     function decimalFilter(event) {
-        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) || noDecimal(lastNum(outputValue.innerHTML))) {
+        if ((outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) || lastNum(outputValue.innerHTML).indexOf(".") === -1) {
             addValue(event);
         }
     }
 
     function operatorFilter(event) {
-        if (noOperator(lastNum(outputValue.innerHTML)) && lastNum(outputValue.innerHTML) !== ".") {
+        if (lastNum(outputValue.innerHTML).length > 0 && lastNum(outputValue.innerHTML) !== ".") {
             addOperator(event);
         }
     }
@@ -113,7 +109,7 @@ var calculator = (function () {
 
     function backspace(event) {
         const outputArray = [...outputValue.innerHTML];
-        const backspacedInput = (noOperator(lastNum(outputValue.innerHTML))) ? 
+        const backspacedInput = (lastNum(outputValue.innerHTML).length > 0) ? 
             outputArray.slice(0, outputArray.length - 1) :
             outputArray.slice(0, outputArray.length - 3)	
         output(backspacedInput);
