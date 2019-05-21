@@ -11,28 +11,10 @@ var calculator = (function () {
         return outputArray[outputArray.length -1];
     }
 
-    function operatorFilter(event) {
-        if (lastNum(outputValue.innerHTML).length > 0 && lastNum(outputValue.innerHTML) !== ".") {
-                addOperator(event);
-        }
-    }
-
-    function sqRtFilter(event) {
-        if (lastNum(outputValue.innerHTML).length > 0) {
-            reduceEquuations(outputValue.innerHTML);
-        }
-        calculateSqRt(outputValue.innerHTML);
-    }
-
     function answerFilter(event) {
+        //if there is not already a number on the screen or a number after an operator, add the answer value
         if (lastNum(outputValue.innerHTML).length === 0) {
             addValue(event)
-        }
-    }
-
-    function equalsFilter(event) {
-        if (lastNum(outputValue.innerHTML).length > 0 && lastNum(outputValue.innerHTML) !== ".") {
-            reduceEquations(outputValue.innerHTML);
         }
     }
 
@@ -42,7 +24,34 @@ var calculator = (function () {
         }
     }
 
+    function operatorFilter(event) {
+        // if there is no number on the screen or a number after an operator, or there is only a decimal on the screen or after an operator ERROR
+        if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
+            return outputValue.innerHTML = "ERROR" 
+        }
+        addOperator(event);
+    }
+
+    function sqRtFilter(event) {
+        if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
+            return outputValue.innerHTML = "ERROR" 
+        }
+        if (lastNum(outputValue.innerHTML).length === 0 && lastNum(outputValue.innerHTML) !== ".")  {
+            reduceEquations(outputValue.innerHTML);
+        }
+        calculateSqRt(outputValue.innerHTML);
+    }
+
+    function equalsFilter(event) {
+        if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
+            return outputValue.innerHTML = "ERROR" 
+        }    
+        reduceEquations(outputValue.innerHTML);
+    }
+
     function filter(event) {
+        
+
         if (event === "AC") {
             newInputValue = [];
             output(newInputValue);
@@ -50,12 +59,13 @@ var calculator = (function () {
         if (event === "Backspace" || event === "Del") {
             backspace();
         }
-        if (event === "Ans") {
-            answerFilter();
-        }
         if (/\d/.test(event)) {
             addValue(event);
         }
+        if (event === "Ans") {
+            answerFilter(answerBtn.value);
+        }
+
         if (event === ".") {
             decimalFilter(event);
         }
@@ -92,7 +102,7 @@ var calculator = (function () {
     };
 
     function addValue(number) {
-        const inputArray = (outputValue.innerHTML === answerBtn.value && outputValue.classList.contains("answer")) ? [number] : [...outputValue.innerHTML, number];
+        const inputArray = (outputValue.classList.contains("answer") || outputValue.innerHTML === "ERROR") ? [number] : [...outputValue.innerHTML, number];
         if (outputValue.classList.contains("answer")) {
             outputValue.classList.remove("answer");
         }
