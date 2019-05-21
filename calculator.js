@@ -53,10 +53,8 @@ var calculator = (function () {
             return addOperator(event); 
         }
         if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== "." && event === "√") { 
-            reduceEquations(outputValue.innerHTML); 
-        }
-        if (event === "√") {
-            return calculateSqRt(outputValue.innerHTML);  
+            reduceEquations(outputValue.innerHTML);
+            return calculateSqRt(outputValue.innerHTML);
         }
     }
 
