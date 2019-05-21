@@ -24,7 +24,7 @@ var calculator = (function () {
         button.addEventListener('click', (event) => filter(event.target.innerHTML));
     });
 
-    function filter(event) {   
+    function filter(event) { 
         if (event === "AC") {
             newInputValue = [];
             return output(newInputValue);
@@ -49,13 +49,11 @@ var calculator = (function () {
         if (event === "=" || event === "Enter") {
             return reduceEquations(outputValue.innerHTML);
         }
-        if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== ".") { 
-            if ( event === "√") {
-               return reduceEquations(outputValue.innerHTML); 
-            }
-            if (/[+/*-]/.test(event)) {
-               return addOperator(event); 
-            } 
+        if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== "." && /[+/*-]/.test(event)) {
+            return addOperator(event); 
+        }
+        if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== "." && event === "√") { 
+            reduceEquations(outputValue.innerHTML); 
         }
         if (event === "√") {
             return calculateSqRt(outputValue.innerHTML);  
