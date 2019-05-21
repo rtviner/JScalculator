@@ -6,48 +6,10 @@ var calculator = (function () {
     const outputValue = document.getElementById('display');
     const answerBtn = document.getElementById('answer');
 
-    const lastNum = (string) => {
+    const lastNum = (string) => { 
         let outputArray = string.split(" ");
         return outputArray[outputArray.length -1];
     }
-
-    // function answerFilter(event) {
-    //     //if there is not already a number on the screen or a number after an operator, add the answer value
-    //     if (lastNum(outputValue.innerHTML).length === 0) {
-    //         addValue(event)
-    //     }
-    // }
-
-    // function decimalFilter(event) {
-    //     if (lastNum(outputValue.innerHTML).indexOf(".") === -1) {
-    //         addValue(event);
-    //     }
-    // }
-
-    // function operatorFilter(event) {
-    //     // if there is no number on the screen or a number after an operator, or there is only a decimal on the screen or after an operator ERROR
-    //     if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === "." || outputValue.innerHTML === "ERROR") {
-    //         return addError; 
-    //     }
-    //     addOperator(event);
-    // }
-
-    // function sqRtFilter(event) {
-    //     if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
-    //         return addError; 
-    //     }
-    //     if (lastNum(outputValue.innerHTML) !== ".")  {
-    //         reduceEquations(outputValue.innerHTML);
-    //     }
-    //     calculateSqRt(outputValue.innerHTML);
-    // }
-
-    // function equalsFilter(event) {
-    //     if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
-    //          return addError;
-    //     }    
-    //     reduceEquations(outputValue.innerHTML);
-    // }
 
     window.addEventListener('keydown', (event) => {
         if (event.key === "Enter") {
@@ -80,21 +42,23 @@ var calculator = (function () {
             return addValue(event);
         }
         if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === "." || outputValue.innerHTML === "ERROR") {
-            if (event === "√" || event === "=" || event === "Enter" || /[+/*-]/.test(event)) {
+            if (event === "√" || event === "=" || event === "Enter") {
                 return outputValue.innerHTML = "ERROR";
             }
-        }
-        if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== "." && event === "√") {  
-            reduceEquations(outputValue.innerHTML);
-        }
-        if (event === "√") {
-            return calculateSqRt(outputValue.innerHTML);  
         }
         if (event === "=" || event === "Enter") {
             return reduceEquations(outputValue.innerHTML);
         }
-        if (/[+/*-]/.test(event)) {
-            return addOperator(event);
+        if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== ".") { 
+            if ( event === "√") {
+               return reduceEquations(outputValue.innerHTML); 
+            }
+            if (/[+/*-]/.test(event)) {
+               return addOperator(event); 
+            } 
+        }
+        if (event === "√") {
+            return calculateSqRt(outputValue.innerHTML);  
         }
     }
 
