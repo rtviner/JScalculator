@@ -26,7 +26,7 @@ var calculator = (function () {
 
     function operatorFilter(event) {
         // if there is no number on the screen or a number after an operator, or there is only a decimal on the screen or after an operator ERROR
-        if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
+        if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === "." || outputValue.innerHTML === "ERROR") {
             return outputValue.innerHTML = "ERROR" 
         }
         addOperator(event);
@@ -36,7 +36,7 @@ var calculator = (function () {
         if (lastNum(outputValue.innerHTML).length === 0 || lastNum(outputValue.innerHTML) === ".") {
             return outputValue.innerHTML = "ERROR" 
         }
-        if (lastNum(outputValue.innerHTML).length === 0 && lastNum(outputValue.innerHTML) !== ".")  {
+        if (lastNum(outputValue.innerHTML) !== ".")  {
             reduceEquations(outputValue.innerHTML);
         }
         calculateSqRt(outputValue.innerHTML);
@@ -49,35 +49,31 @@ var calculator = (function () {
         reduceEquations(outputValue.innerHTML);
     }
 
-    function filter(event) {
-        
-
+    function filter(event) {       
         if (event === "AC") {
             newInputValue = [];
-            output(newInputValue);
+            return output(newInputValue);
         }
         if (event === "Backspace" || event === "Del") {
-            backspace();
-        }
-        if (/\d/.test(event)) {
-            addValue(event);
+            return backspace();
         }
         if (event === "Ans") {
-            answerFilter(answerBtn.value);
+            return answerFilter(answerBtn.value);
         }
 
         if (event === ".") {
-            decimalFilter(event);
+            return decimalFilter(event);
         }
         if (event === "=" || event === "Enter") {
-            equalsFilter(event);
+            return equalsFilter(event);
         }
         if (event === "√") {
-            sqRtFilter();
+            return sqRtFilter();
         }
         if (/[+/*-]/.test(event)) {
-            operatorFilter(event);
+            return operatorFilter(event);
         }
+        return addValue(event);
     }
     
     window.addEventListener('keydown', (event) => {
