@@ -36,7 +36,7 @@ var calculator = (function () {
             return addValue(event);
         }
         if (event === "Ans" && lastNum(outputValue.innerHTML).length === 0) {
-            return addValue(event);
+            return addValue(answerBtn.value);
         }
         if (event === "." && lastNum(outputValue.innerHTML).indexOf(".") === -1) {
             return addValue(event);
