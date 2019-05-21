@@ -49,8 +49,6 @@ var calculator = (function () {
     //     reduceEquations(outputValue.innerHTML);
     // }
 
-
-    
     window.addEventListener('keydown', (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -64,7 +62,7 @@ var calculator = (function () {
         button.addEventListener('click', (event) => filter(event.target.innerHTML));
     });
 
-        function filter(event) {   
+    function filter(event) {   
         if (event === "AC") {
             newInputValue = [];
             return output(newInputValue);
@@ -88,7 +86,6 @@ var calculator = (function () {
         }
         if (lastNum(outputValue.innerHTML).length !== 0 && lastNum(outputValue.innerHTML) !== "." && event === "√") {  
             reduceEquations(outputValue.innerHTML);
-            return calculateSqRt(outputValue.innerHTML); 
         }
         if (event === "√") {
             return calculateSqRt(outputValue.innerHTML);  
@@ -130,15 +127,11 @@ var calculator = (function () {
         outputValue.innerHTML = array.join("");
     }
 
-    function add(number1, number2) {
-        return number1 + number2;
-    }
+    const add = (number1, number2) => number1 + number2;
 
-    function subtract(number1, number2) {
-        return number1 - number2;
-    }
+    const subtract = (number1, number2) => number1 - number2;
 
-    function multiply(number1, number2) {
+    const multiply = (number1, number2) => {
         product = number1 * number2;
         return parseFloat(product.toFixed(decimalPlaces(number1)+decimalPlaces(number2)));
     }
@@ -151,17 +144,11 @@ var calculator = (function () {
             - (match[2] ? +match[2] : 0));
     }
 
-    function divide (number1, number2) {
-        return number1 / number2;
-    }
+    const divide = (number1, number2) => number1 / number2;
 
-    function sqrt (number) {
-        return Math.sqrt(number);
-    }
-
-    function calculateSqRt (number) {
-        answer(sqrt(number));
-    }
+    const sqrt = (number) => Math.sqrt(number);
+    
+    const calculateSqRt = (number) => answer(sqrt(number));
 
     const calculations = {
         "/": (num1, num2) => divide(num1, num2),
