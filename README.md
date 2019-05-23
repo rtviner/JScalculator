@@ -4,14 +4,13 @@ Description
 -----------
 This is a simple calculator created with JavaScript, HTML, and CSS.  
 
-Almost every button click or keyboard press goes through a filter function to prevent things such as multiple decimals in a row e.g .... or multiple operators in a row e.g ***** from outputting onto the screen.
+Equations for calculation can be entered with keypresses or button clicks, clicking "=" or the Enter key will initiate the calculation.
 
-A similar filter prevents the equals button and square root button from doing anything until there are enough numbers and operators present.
-I used the RegExp test method for these filters.  The RegExp exec method is used in the buildEquation functions to parse the input values into the paramaters for the actual math functions (2 number variables and an operator variable).
+Every button click or keyboard press goes through a filter function to prevent things such as multiple decimals in a row e.g .... or multiple operators in a row e.g ***** from outputting onto the screen.  The filter function also prevents the equals button from initiating calculations until there are enough numbers and operators present and will trigger an error message if the equation present is not valid.  If the keypresses/clicks are valid than the appropriate function will be called. i.e addValue, addOperator, reduceEquation etc.
 
-There is a decimal places function to account for the inaccuracy of doing math with floats.  This function uses the RegExp match method to count the number of digits after the decimal point for each number in a multiplication equation, the multiplication answer is then rounded to the sum of the number of digits after the decimal in num1 and the number of digits after the decimal in num2.  Otherwise 0.2 * 0.2 = 0.040000000000012 rather than 0.04.
+The RegExp exec method is used in the makeEquation function to parse the input values into the paramaters for the actual math functions (2 number variables and an operator variable).  This function is called inside of the reduceEquations function until the equation is reduced down to one number, the final answer.
 
-Finally, there is a pushOrClear function to determine if keys/buttons pushed after an answer should be added to the answer on the output screen (pushed to the inputValue array) or should start a new equation and reset the output screen.  If a number or decimal is clicked then the screen resets and shows only that number or decimal however, if an operator is clicked, then the operator shows up on the screen after the answer number.
+There is a decimalPlaces function to account for the inaccuracy of doing multiplication with floats.  This function uses the RegExp match method to count the number of digits after the decimal point for each number in a multiplication equation, the multiplication answer is then rounded to the sum of the number of digits after the decimal in num1 and the number of digits after the decimal in num2.  Otherwise 0.2 * 0.2 = 0.040000000000012 rather than 0.04.
 
 How to Use
 ----------
@@ -25,11 +24,11 @@ DEL:  Backspace, click this button or press the "delete" key to erase the last n
 
 Ans: Stores the answer to the last operation. Click this button if you would like to perform another operation with the answer from the last problem.
 
-√:  Square root.  Click or type a number then press the square root button to calculate the square root of the preceeding number
+√:  Square root.  Click or type a number or equation then press the square root button to calculate the square root of the number or equation answer.
 
 Use Notes
 ---------------
-If you press the "enter" key when a button is highlighted, that button will be "clicked". The "Enter" key works as an equals button if no buttons are highlighted.
+The "Enter" key works as an equals button only, if a button is highlighted and Enter is clicked nothing will happen.
 
 If the equation or answer is longer than the screen you can scroll to the right to see the overflow.
 
